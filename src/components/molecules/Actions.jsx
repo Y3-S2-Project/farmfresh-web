@@ -1,13 +1,9 @@
 import React from 'react'
 
-export const Actions = ({update,remove,view }) => {
+export const Actions = ({ children }) => {
   return (
-      <>
-           <h>action buttons</h>
-          <div>{update}</div>     
-          <div>{remove}</div>     
-          <div>{view}</div>     
-      
-      </>
+    <div className='flex justify-around items-center' style={{ gap: '10px' }}>
+      {children}
+    </div>     
   )
 }
