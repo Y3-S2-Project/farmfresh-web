@@ -26,3 +26,9 @@ export const NAV_DROPDOWN = [
     icon: <LogoutIcon />,
   },
 ]
+
+export const ROLES = {
+  CUSTOMER: 'CUSTOMER',
+  FARMER: 'FARMER',
+  ADMIN: 'ADMIN',
+}

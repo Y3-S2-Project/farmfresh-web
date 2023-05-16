@@ -16,8 +16,11 @@ import {
   CUSTOMER_NAV_MENU_TWO,
   NAV_DROPDOWN,
 } from '../../../utils/constants'
+import { useSelector } from 'react-redux'
+import { getCurrentUser } from '../../../redux/features/userSlice'
 
 function FFNavBar() {
+  const currentUser = useSelector(getCurrentUser)
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
@@ -47,6 +50,7 @@ function FFNavBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Logo />
+          {/* mobile screen */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -116,7 +120,7 @@ function FFNavBar() {
               </Button>
             ))}
           </Box>
-
+          {/* large screen */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <Box
