@@ -1,7 +1,11 @@
+import FFNavBar from './components/molecules/FFNavBar/FFNavBar'
+
 function App() {
   return (
-    <>HELLO</>
-  );
+    <>
+      <FFNavBar />
+    </>
+  )
 }
 
-export default App;
+export default App
