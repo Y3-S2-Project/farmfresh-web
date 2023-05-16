@@ -4,12 +4,16 @@ import Home from '../pages/home'
 import { useSelector } from 'react-redux'
 import { getCurrentUser } from '../redux/features/userSlice'
 import { ROLES } from '../utils/constants'
+import FFNavBar from '../components/molecules/FFNavBar/FFNavBar'
 
 const CommonRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
+    <>
+      <FFNavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </>
   )
 }
 
