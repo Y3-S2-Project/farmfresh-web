@@ -19,7 +19,7 @@ export const fetchFarmerProducts = async () => {
   return await axios.delete('/api/products/farmer-products')
 }
 
-export const fetchOnSaleProducsts = async () => {
+export const fetchOnSaleProducts = async () => {
   return await axios.get('/api/products/on-sale')
 }
 

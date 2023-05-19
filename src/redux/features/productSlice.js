@@ -16,6 +16,37 @@ const initialState = {
   success: false,
   error: false,
   message: '',
+  status: 0,
+  product: null,
+  add_product_modal: false,
+  edit_product_modal: {
+    modal: false,
+    product_id: '',
+    product_name: '',
+    product_price: 0.0,
+    product_status: '',
+    product_category: '',
+    product_offer: 0.0,
+    product_images: [],
+    product_quantity: 0,
+    product_visible: true,
+    product_weight: 0.0,
+    product_sale_status: false,
+  },
+  view_product_modal: {
+    modal: false,
+    product_id: '',
+    product_name: '',
+    product_price: 0.0,
+    product_status: '',
+    product_category: '',
+    product_offer: 0.0,
+    product_images: [],
+    product_quantity: 0,
+    product_visible: true,
+    product_weight: 0.0,
+    product_sale_status: false,
+  },
 }
 
 export const getAllProducts = createAsyncThunk(
@@ -24,13 +55,13 @@ export const getAllProducts = createAsyncThunk(
 )
 export const getProduct = createAsyncThunk(
   'products/fetchProduct',
-  fetchProduct,
+  async (product_id) => await fetchProduct(product_id),
 )
 export const getFarmerProducts = createAsyncThunk(
   'products/fetchFarmerProducts',
   fetchFarmerProducts,
 )
-export const getOnSaleProducst = createAsyncThunk(
+export const getOnSaleProducts = createAsyncThunk(
   'products/fetchOnSaleProducts',
   fetchOnSaleProducts,
 )
@@ -53,27 +84,133 @@ export const updateProductVisiblity = createAsyncThunk(
   async (product_id) => await chageVisiblity(product_id),
 )
 
+const handleAsyncAction = (state, action) => {
+  state.loading = false
+  state.success = action.payload.success
+  state.message = action.payload.message
+  state.status = action.payload.status
+  state.error = action.payload.error
+}
+
 const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    
+    addProductModal: (state, action) => {
+      state.add_product_modal = action.payload
+    },
+    editProductModalOpen: (state, action) => {
+      state.edit_product_modal = { ...action.payload }
+      state.edit_product_modal.modal = true
+    },
+    viewProductModalOpen: (state, action) => {
+      state.view_product_modal = { ...action.payload }
+      state.view_product_modal.modal = true
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state, action) => {
-      state.loading = true
-    })
-    builder.addCase(login.fulfilled, (state, action) => {
-      state.loading = false
-      state.user = action.payload
-    })
-    builder.addCase(login.rejected, (state, action) => {
-      state.loading = false
-      state.error = action.error.message
-    })
+    builder
+      // getAllProduct extra reducers
+      .addCase(getAllProducts.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getAllProducts.fulfilled, (state, action) => {
+        state.products = action.payload.data
+        handleAsyncAction(state, action)
+      })
+      .addCase(getAllProducts.rejected, (state, action) => {
+        handleAsyncAction(state, action)
+      })
+      // getProduct extra reducers
+      .addCase(getProduct.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getProduct.fulfilled, (state, action) => {
+        state.product = { ...action.payload.data }
+        handleAsyncAction(state, action)
+      })
+      .addCase(getProduct.rejected, (state, action) => {
+        handleAsyncAction(state, action)
+      })
+      // getOnSaleProduct extra reducers
+      .addCase(getOnSaleProducts.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getOnSaleProducts.fulfilled, (state, action) => {
+        state.products = action.payload.data
+        handleAsyncAction(state, action)
+      })
+      .addCase(getOnSaleProducts.rejected, (state, action) => {
+        handleAsyncAction(state, action)
+      })
+      // getFarmerProducts extra reducers
+      .addCase(getFarmerProducts.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getFarmerProducts.fulfilled, (state, action) => {
+        state.products = action.payload.data
+        handleAsyncAction(state, action)
+      })
+      .addCase(getFarmerProducts.rejected, (state, action) => {
+        handleAsyncAction(state, action)
+      })
+      // postProduct extra reducers
+      .addCase(postProduct.fulfilled, (state, action) => {
+        state.loading = false
+        handleAsyncAction(state, action)
+        state.products.push(action.payload.data)
+      })
+      .addCase(postProduct.rejected, (state, action) => {
+        handleAsyncAction(state, action)
+      })
+      // removeProduct extra reducers
+      .addCase(removeProduct.fulfilled, (state, action) => {
+        state.loading = false
+        handleAsyncAction(state, action)
+        state.products = state.products.filter(
+          (product) => product.product_id !== action.payload.data.product_id,
+        )
+      })
+      .addCase(removeProduct.rejected, (state, action) => {
+        handleAsyncAction(state, action)
+      })
+      // updateProduct extra reducers
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.loading = false
+        handleAsyncAction(state, action)
+        state.products = state.products.map((product) =>
+          product.product_id === action.payload.data.product_id
+            ? action.payload.data
+            : product,
+        )
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        handleAsyncAction(state, action)
+      })
+      // update product visibility extra reducers
+      .addCase(updateProductVisiblity.fulfilled, (state, action) => {
+        state.loading = false
+        handleAsyncAction(state, action)
+        state.products = state.products.map((product) =>
+          product.product_id === action.payload.data.product_id
+            ? action.payload.data
+            : product,
+        )
+      })
+      .addCase(updateProductVisiblity.rejected, (state, action) => {
+        handleAsyncAction(state, action)
+      })
   },
 })
+
+export const { addProductModal, viewProductModalOpen, editProductModalOpen } =
+  productsSlice.actions
+
 export const selectAllProducts = (state) => state.products.products
+export const selectProduct = (state) => state.products.product
+export const editProductModal = (state) => state.products.edit_product_modal
+export const viewProductModal = (state) => state.products.view_product_modal
+
 export const isLoading = (state) => state.products.loading
 export const isSuccess = (state) => state.products.success
 export const isError = (state) => state.products.error
