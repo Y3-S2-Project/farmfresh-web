@@ -1,5 +1,5 @@
 import React from 'react'
-import FFModal from '../../components/molecules/FFModal/FFModal'
+import FFModal from '../../components/molecules/FFModal/FFConfirmationModal'
 import ColouredWarningIcon from '../../assets/icons/ColouredWarningIcon'
 
 const index = () => {
