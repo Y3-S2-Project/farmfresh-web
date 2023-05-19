@@ -1,22 +1,64 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { loginUser, logoutUser } from '../../services/user'
+import {
+  addProduct,
+  editProduct,
+  fetchProduct,
+  fetchProducts,
+  fetchFarmerProducts,
+  fetchOnSaleProducts,
+  deleteProduct,
+  chageVisiblity,
+} from '../../services/product'
 
 const initialState = {
+  products: [],
   loading: false,
-  user: null,
-  error: '',
+  success: false,
+  error: false,
+  message: '',
 }
 
-export const login = createAsyncThunk(
-  'user/loginUser',
-  async (credentials) => (await loginUser(credentials)).data,
+export const getAllProducts = createAsyncThunk(
+  'products/fetchProducts',
+  fetchProducts,
 )
-export const logout = createAsyncThunk('user/logoutUser', logoutUser)
+export const getProduct = createAsyncThunk(
+  'products/fetchProduct',
+  fetchProduct,
+)
+export const getFarmerProducts = createAsyncThunk(
+  'products/fetchFarmerProducts',
+  fetchFarmerProducts,
+)
+export const getOnSaleProducst = createAsyncThunk(
+  'products/fetchOnSaleProducts',
+  fetchOnSaleProducts,
+)
 
-const userSlice = createSlice({
-  name: 'user',
+export const postProduct = createAsyncThunk(
+  'products/addProduct',
+  async (product) => await addProduct(product),
+)
+export const updateProduct = createAsyncThunk(
+  'products/editProduct',
+  async (updatedProduct) => await editProduct(updatedProduct),
+)
+
+export const removeProduct = createAsyncThunk(
+  'products/deleteProduct',
+  async (product_id) => await deleteProduct(product_id),
+)
+export const updateProductVisiblity = createAsyncThunk(
+  'products/chageVisiblity ',
+  async (product_id) => await chageVisiblity(product_id),
+)
+
+const productsSlice = createSlice({
+  name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    
+  },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state, action) => {
       state.loading = true
@@ -29,23 +71,12 @@ const userSlice = createSlice({
       state.loading = false
       state.error = action.error.message
     })
-    builder.addCase(logout.pending, (state, action) => {
-      state.loading = true
-    })
-    builder.addCase(logout.fulfilled, (state, action) => {
-      state.loading = false
-      state.user = null
-    })
-    builder.addCase(logout.rejected, (state, action) => {
-      state.loading = false
-      state.error = action.error.message
-    })
   },
 })
+export const selectAllProducts = (state) => state.products.products
+export const isLoading = (state) => state.products.loading
+export const isSuccess = (state) => state.products.success
+export const isError = (state) => state.products.error
+export const message = (state) => state.products.message
 
-export const isLoading = (state) => state.user.loading
-export const getCurrentUser = (state) => state.user.user?.data?.user
-export const getAccessToken = (state) => state.user.user?.data?.access_token
-export const getLoginMessage = (state) => state.user.user.message
-
-export default userSlice.reducer
+export default productsSlice.reducer
