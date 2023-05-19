@@ -1,18 +1,16 @@
 import React from 'react'
-import FFButton from '../../components/atoms/FFButton'
-import ClappingIcon from '../../assets/icons/ClappingIcon'
+import FFModal from '../../components/molecules/FFModal/FFModal'
+import ColouredWarningIcon from '../../assets/icons/ColouredWarningIcon'
 
 const index = () => {
   return (
     <>
       <h1 className="hidden">Home</h1>
-      <FFButton
-        name="Helpful"
-        variant="outlined"
-        color="success"
-        startIcon={<ClappingIcon />}
-        buttonStyles={{ width: '100px', borderRadius: '12px', height: '40px' }}
-        handleClick={() => console.log('clicked')}
+      <FFModal
+        title="Confirm Deletion"
+        topLeftIcon={<ColouredWarningIcon />}
+        message={`Are you sure you want to delete this review? You won't be able to revoke this decision.`}
+        cancellable={true}
       />
     </>
   )

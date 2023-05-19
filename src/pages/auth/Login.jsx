@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getCurrentUser, login } from '../../redux/features/userSlice'
 import { loginSchema } from '../../utils/validations/auth'
 import { useFormik } from 'formik'
-import SEO from '../../components/atoms/SEO'
+import SEO from '../../components/atoms/SEO/SEO'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 const Login = () => {
