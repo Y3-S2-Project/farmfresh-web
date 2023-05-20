@@ -1,14 +1,12 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-const sellerRoutes = () => {
+const FarmerRoutes = () => {
   return (
     <>
-        <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
-        </Routes>
+      <Routes> </Routes>
     </>
   )
 }
 
-export default sellerRoutes
+export default FarmerRoutes

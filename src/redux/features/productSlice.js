@@ -85,11 +85,13 @@ export const updateProductVisiblity = createAsyncThunk(
 )
 
 const handleAsyncAction = (state, action) => {
-  state.loading = false
-  state.success = action.payload.success
-  state.message = action.payload.message
-  state.status = action.payload.status
-  state.error = action.payload.error
+  if (action.payload) {
+    state.loading = false
+    state.success = action.payload?.data?.success
+    state.message = action.payload?.data?.message
+    state.status = action.payload?.data?.status
+    state.error = action.payload?.data?.error
+  }
 }
 
 const productsSlice = createSlice({
@@ -115,7 +117,9 @@ const productsSlice = createSlice({
         state.loading = true
       })
       .addCase(getAllProducts.fulfilled, (state, action) => {
-        state.products = action.payload.data
+        state.products = action?.payload?.data?.data
+
+        console.log(action?.payload?.data)
         handleAsyncAction(state, action)
       })
       .addCase(getAllProducts.rejected, (state, action) => {
@@ -126,7 +130,7 @@ const productsSlice = createSlice({
         state.loading = true
       })
       .addCase(getProduct.fulfilled, (state, action) => {
-        state.product = { ...action.payload.data }
+        state.product = { ...action.payload?.data?.data }
         handleAsyncAction(state, action)
       })
       .addCase(getProduct.rejected, (state, action) => {
@@ -137,7 +141,7 @@ const productsSlice = createSlice({
         state.loading = true
       })
       .addCase(getOnSaleProducts.fulfilled, (state, action) => {
-        state.products = action.payload.data
+        state.products = action?.payload?.data?.data
         handleAsyncAction(state, action)
       })
       .addCase(getOnSaleProducts.rejected, (state, action) => {
@@ -148,7 +152,7 @@ const productsSlice = createSlice({
         state.loading = true
       })
       .addCase(getFarmerProducts.fulfilled, (state, action) => {
-        state.products = action.payload.data
+        state.products = action?.payload?.data?.data
         handleAsyncAction(state, action)
       })
       .addCase(getFarmerProducts.rejected, (state, action) => {
@@ -158,7 +162,7 @@ const productsSlice = createSlice({
       .addCase(postProduct.fulfilled, (state, action) => {
         state.loading = false
         handleAsyncAction(state, action)
-        state.products.push(action.payload.data)
+        state.products.push(action?.payload?.data?.data)
       })
       .addCase(postProduct.rejected, (state, action) => {
         handleAsyncAction(state, action)
@@ -168,7 +172,8 @@ const productsSlice = createSlice({
         state.loading = false
         handleAsyncAction(state, action)
         state.products = state.products.filter(
-          (product) => product.product_id !== action.payload.data.product_id,
+          (product) =>
+            product.product_id !== action?.payload?.data?.data.product_id,
         )
       })
       .addCase(removeProduct.rejected, (state, action) => {
@@ -179,8 +184,8 @@ const productsSlice = createSlice({
         state.loading = false
         handleAsyncAction(state, action)
         state.products = state.products.map((product) =>
-          product.product_id === action.payload.data.product_id
-            ? action.payload.data
+          product.product_id === action?.payload?.data?.data.product_id
+            ? action?.payload?.data?.data
             : product,
         )
       })
@@ -192,8 +197,8 @@ const productsSlice = createSlice({
         state.loading = false
         handleAsyncAction(state, action)
         state.products = state.products.map((product) =>
-          product.product_id === action.payload.data.product_id
-            ? action.payload.data
+          product.product_id === action?.payload?.data?.data.product_id
+            ? action?.payload?.data?.data
             : product,
         )
       })
@@ -210,6 +215,7 @@ export const selectAllProducts = (state) => state.products.products
 export const selectProduct = (state) => state.products.product
 export const editProductModal = (state) => state.products.edit_product_modal
 export const viewProductModal = (state) => state.products.view_product_modal
+export const add_product_modal = (state) => state.products.add_product_modal
 
 export const isLoading = (state) => state.products.loading
 export const isSuccess = (state) => state.products.success

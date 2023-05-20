@@ -1,13 +1,12 @@
 import React from 'react'
-import { CustomActionIcon } from '../atoms'
 
-import { ADMIN_PRODUCT_TABLE_DATA } from '../../util/constant'
+import { VisionIcon, CrossIcon, CheckIcon } from '../../assets/icons'
+
 import { Actions } from '../molecules/Actions'
-import { TABLE_HEADER_CONTENT } from '../../util/constant'
+
 import { Pill } from '../atoms/Pill'
-import { useSelector } from 'react-redux'
-export const Table = () => {
-  const productList = useSelector((state) => state.products.products)
+
+export const Table = ({ productList, headers }) => {
   return (
     <table className="w-1113">
       <thead
@@ -18,7 +17,7 @@ export const Table = () => {
           className="flex justify-center items-center "
           style={{ width: '1113px', height: '65px' }}
         >
-          {TABLE_HEADER_CONTENT?.map((item, index) => (
+          {headers?.map((item, index) => (
             <th
               key={index}
               className="flex justify-center items-center"
@@ -32,11 +31,25 @@ export const Table = () => {
       <tbody className="p-4  mt-4 bg-white border-1 border-[#1F4647] shadow-md rounded-lg">
         {productList?.map((row, index) => {
           let cells = []
-          cells = Object.values(row).map((data, cellIndex) => {
+
+          cells = Object.entries(row).map(([key, data], cellIndex) => {
+            if (
+              key === 'product_price' ||
+              key === '_id' ||
+              key === 'product_sale_status' ||
+              key === 'product_category' ||
+              key === 'farmer' ||
+              key === 'product_quantity' ||
+              key === 'createdAt' ||
+              key === 'product_weight'
+            ) {
+              return null // Skip the key-value pair
+            }
+
             if (
               Array.isArray(data) &&
               data.every(
-                (item) => typeof item === 'string' && item.startsWith('https')
+                (item) => typeof item === 'string' && item.startsWith('https'),
               )
             ) {
               return (
@@ -66,7 +79,7 @@ export const Table = () => {
                   width: '1047px',
                   height: '70px',
                   padding: '20px',
-                  paddingLeft: '30px'
+                  paddingLeft: '30px',
                 }}
               >
                 <Pill type={data} />
@@ -83,9 +96,9 @@ export const Table = () => {
               {cells}
               <td style={{ width: '1047px', height: '70px', padding: '20px' }}>
                 <Actions>
-                  <CustomActionIcon actionType="farmer-remove" />
-                  <CustomActionIcon actionType="farmer-edit" />
-                  <CustomActionIcon actionType="farmer-view" />
+                  <CheckIcon />
+                  <CrossIcon />
+                  <VisionIcon />
                 </Actions>
               </td>
             </tr>
