@@ -1,7 +1,7 @@
 import React from 'react'
 import { Rating, Typography } from '@mui/material'
 
-const FFRating = ({ value, handleRatingChange }) => {
+const FFRating = ({ value, handleRatingChange, size }) => {
   return (
     <>
       <div
@@ -17,6 +17,9 @@ const FFRating = ({ value, handleRatingChange }) => {
           value={value}
           precision={0.5}
           onChange={handleRatingChange}
+          sx={{
+            fontSize: size,
+          }}
         />
         <Typography>{value}</Typography>
       </div>
