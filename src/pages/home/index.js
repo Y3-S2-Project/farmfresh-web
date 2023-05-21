@@ -1,4 +1,6 @@
 import React from 'react'
+import FFButton from '../../components/atoms/FFButton'
+import ClappingIcon from '../../assets/icons/ClappingIcon'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFSingleCartItem from '../../components/atoms/FFSingleCartItem/FFSingleCartItem'
 import FFTableHead from '../../components/atoms/FFTableHead/FFTableHead'
@@ -9,6 +11,14 @@ const Index = () => {
   return (
     <>
       <h1 className="hidden">Home</h1>
+      <FFButton
+        name="Helpful"
+        variant="outlined"
+        color="success"
+        startIcon={<ClappingIcon />}
+        buttonStyles={{ width: '100px', borderRadius: '12px', height: '40px' }}
+        handleClick={() => console.log('clicked')}
+      />
       {/* header */}
       {/* <Paper className="shadow-sm rounded-xl xl:py-3 xl:px-20 mx-16 mt-2"></Paper> */}
       {/* single row */}
