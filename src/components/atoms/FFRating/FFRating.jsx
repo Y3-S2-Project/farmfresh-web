@@ -1,7 +1,17 @@
 import React from 'react'
-import { Rating, Typography } from '@mui/material'
+import { Rating, Typography, styled } from '@mui/material'
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
 
-const FFRating = ({ value, handleRatingChange, size }) => {
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {
+    color: '#DEB225',
+  },
+  '& .MuiRating-iconHover': {
+    color: '#DEB225',
+  },
+})
+const FFRating = ({ value, handleRatingChange, size, ratingStyles }) => {
   return (
     <>
       <div
@@ -9,10 +19,12 @@ const FFRating = ({ value, handleRatingChange, size }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-start',
+          marginInline: '20px',
+          marginTop: '24px',
+          ...ratingStyles,
         }}
       >
-        <Rating
-          name="half-rating"
+        <StyledRating
           defaultValue={0}
           value={value}
           precision={0.5}
@@ -20,8 +32,18 @@ const FFRating = ({ value, handleRatingChange, size }) => {
           sx={{
             fontSize: size,
           }}
+          icon={<StarRoundedIcon fontSize="inherit" />}
+          emptyIcon={<StarBorderRoundedIcon fontSize="inherit" />}
         />
-        <Typography>{value}</Typography>
+        <Typography
+          sx={{
+            fontSize: '20px',
+            fontWeight: '700',
+            marginLeft: '25px',
+          }}
+        >
+          {value}
+        </Typography>
       </div>
     </>
   )
