@@ -1,10 +1,10 @@
 import React from 'react'
-import FFButton from '../../components/atoms/FFButton'
+import FFButton from '../../components/atoms/FFButton/FFButton'
 import ClappingIcon from '../../assets/icons/ClappingIcon'
 import FFTable from '../../components/molecules/FFTable/FFTable'
-import FFSingleCartItem from '../../components/atoms/FFSingleCartItem/FFSingleCartItem'
-import FFTableHead from '../../components/atoms/FFTableHead/FFTableHead'
-import FFTableBody from '../../components/molecules/FFTableBody/FFTableBody'
+import FFSingleCartItem from '../../components/molecules/FFSingleCartItem/FFSingleCartItem'
+import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
+import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
 import productImage from '../../assets/cart/Ellipse 6.png'
 
 const Index = () => {

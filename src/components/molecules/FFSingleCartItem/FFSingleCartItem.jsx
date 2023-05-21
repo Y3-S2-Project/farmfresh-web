@@ -1,5 +1,5 @@
 import React from 'react'
-import FFCounter from '../FFCounter/FFCounter'
+import FFCounter from '../../atoms/FFCounter/FFCounter'
 import BinIcon from '../../../assets/icons/BinIcon'
 
 const SingleCartItem = ({ row }) => {
