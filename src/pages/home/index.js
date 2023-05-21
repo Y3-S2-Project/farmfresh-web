@@ -1,29 +1,38 @@
 import React from 'react'
-import { useState } from 'react'
-import FFRating from '../../components/atoms/FFRating/FFRating'
-import FFReviewManageModal from '../../components/molecules/FFModal/FFReviewManageModal'
-import ColouredNotepadIcon from '../../assets/icons/ColouredNotepadIcon'
-import FFConfirmationModal from '../../components/molecules/FFModal/FFConfirmationModal'
-import ColouredWarningIcon from '../../assets/icons/ColouredWarningIcon'
+import FFTable from '../../components/molecules/FFTable/FFTable'
+import FFSingleCartItem from '../../components/atoms/FFSingleCartItem/FFSingleCartItem'
+import FFTableHead from '../../components/atoms/FFTableHead/FFTableHead'
+import FFTableBody from '../../components/molecules/FFTableBody/FFTableBody'
+import productImage from '../../assets/cart/Ellipse 6.png'
+
 const Index = () => {
-  const [value, setValue] = useState(0)
-  console.log('coloredNotepadIcon', ColouredNotepadIcon)
   return (
     <>
       <h1 className="hidden">Home</h1>
-      <FFRating
-        value={value}
-        size={'3rem'}
-        handleRatingChange={(e) => setValue(Number(e.target.value))}
-      />
-      <FFReviewManageModal
-        title={'Write a Review'}
-        subTitle={'Share your thoughts about this product'}
-        topLeftIcon={<ColouredNotepadIcon />}
-        firstLabelName={'Review'}
-      />
+      {/* header */}
+      {/* <Paper className="shadow-sm rounded-xl xl:py-3 xl:px-20 mx-16 mt-2"></Paper> */}
+      {/* single row */}
+      <div className="m-4">
+        <FFTable>
+          <FFTableHead
+            columns={['Product', 'Price', 'Quantity', 'Total', 'Action']}
+          />
+          <FFTableBody rows={ROWS} SingleItem={FFSingleCartItem} />
+        </FFTable>
+      </div>
     </>
   )
 }
+
+const ROWS = [
+  {
+    id: 1,
+    name: 'Product 1',
+    image: productImage,
+    price: `Rs. ${(195.0).toFixed(2)}`,
+    quantity: 1,
+    total: `Rs. ${(97.5).toFixed(2)}`,
+  },
+]
 
 export default Index
