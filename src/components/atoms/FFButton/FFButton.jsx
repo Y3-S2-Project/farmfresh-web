@@ -9,6 +9,7 @@ const FFButton = ({
   startIcon,
   endIcon,
   buttonStyles,
+  buttonFontStyles = {},
   handleClick,
 }) => {
   return (
@@ -28,7 +29,9 @@ const FFButton = ({
         }}
         onClick={handleClick}
       >
-        <Typography color={fontColor}>{name}</Typography>
+        <Typography color={fontColor} sx={buttonFontStyles}>
+          {name}
+        </Typography>
       </Button>
     </>
   )
