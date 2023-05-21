@@ -1,6 +1,8 @@
 import React from 'react'
-import FFButton from '../../components/atoms/FFButton/FFButton'
+import FFButton from '../../components/atoms/FFButton'
 import ClappingIcon from '../../assets/icons/ClappingIcon'
+import FFModal from '../../components/molecules/FFModal/FFConfirmationModal'
+import ColouredWarningIcon from '../../assets/icons/ColouredWarningIcon'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFSingleCartItem from '../../components/molecules/FFSingleCartItem/FFSingleCartItem'
 import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
@@ -11,13 +13,11 @@ const Index = () => {
   return (
     <>
       <h1 className="hidden">Home</h1>
-      <FFButton
-        name="Helpful"
-        variant="outlined"
-        color="success"
-        startIcon={<ClappingIcon />}
-        buttonStyles={{ width: '100px', borderRadius: '12px', height: '40px' }}
-        handleClick={() => console.log('clicked')}
+      <FFModal
+        title="Confirm Deletion"
+        topLeftIcon={<ColouredWarningIcon />}
+        message={`Are you sure you want to delete this review? You won't be able to revoke this decision.`}
+        cancellable={true}
       />
       {/* header */}
       {/* <Paper className="shadow-sm rounded-xl xl:py-3 xl:px-20 mx-16 mt-2"></Paper> */}
