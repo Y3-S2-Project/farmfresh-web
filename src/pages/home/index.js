@@ -1,5 +1,5 @@
 import React from 'react'
-import FFButton from '../../components/atoms/FFButton'
+import FFButton from '../../components/atoms/FFButton/FFButton'
 import ClappingIcon from '../../assets/icons/ClappingIcon'
 import FFModal from '../../components/molecules/FFModal/FFConfirmationModal'
 import ColouredWarningIcon from '../../assets/icons/ColouredWarningIcon'
@@ -22,6 +22,7 @@ const Index = () => {
       {/* header */}
       {/* <Paper className="shadow-sm rounded-xl xl:py-3 xl:px-20 mx-16 mt-2"></Paper> */}
       {/* single row */}
+      <FFButton color="primary" name="Check" />
       <div className="m-4">
         <FFTable>
           <FFTableHead
