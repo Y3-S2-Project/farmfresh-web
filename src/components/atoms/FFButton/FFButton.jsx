@@ -9,6 +9,7 @@ const FFButton = ({
   startIcon,
   endIcon,
   buttonStyles,
+  buttonFontStyles = {},
   handleClick,
 }) => {
   return (

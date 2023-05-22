@@ -6,6 +6,7 @@ import { getAccessToken } from './redux/features/userSlice'
 import { ROLES } from './utils/constants'
 import { ThemeProvider } from '@mui/material'
 import { theme } from './utils/theme'
+import CustomerRoutes from './routes/CustomerRoutes'
 
 function App() {
   const currentUser = useSelector(getAccessToken)
@@ -15,6 +16,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CommonRoutes />
           <AuthRoutes />
+          <CustomerRoutes />
         </ThemeProvider>
       </BrowserRouter>
     </>
