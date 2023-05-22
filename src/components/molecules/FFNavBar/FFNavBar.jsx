@@ -47,8 +47,17 @@ function FFNavBar() {
       }}
       position="static"
     >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+      <Container maxWidth="xxl">
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            px: '64px',
+          }}
+          className=" w-full"
+          disableGutters
+        >
           <Logo />
           {/* mobile screen */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -103,6 +112,7 @@ function FFNavBar() {
           >
             LOGO
           </Typography>
+
           <Box
             sx={{
               flexGrow: 1,
@@ -121,51 +131,65 @@ function FFNavBar() {
             ))}
           </Box>
           {/* large screen */}
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <Box
-                sx={{
-                  outline: '1px solid #000',
-                }}
-              >
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Box>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+          <Box sx={{ flexGrow: 0 }} className="flex items-center">
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: 'none', md: 'flex' },
+                justifyContent: 'center',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {NAV_DROPDOWN.map(({ label, icon }, key) => (
-                <MenuItem
-                  key={key}
-                  onClick={handleCloseUserMenu}
-                  sx={{
-                    outline: '1px solid #000',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    gap: '10px',
-                    alignItems: 'center',
-                  }}
+              {CUSTOMER_NAV_MENU_TWO.map((page) => (
+                <Typography
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: '#000', display: 'block' }}
                 >
-                  {icon}
-                  <Typography textAlign="center">{label}</Typography>
-                </MenuItem>
+                  {page}
+                </Typography>
               ))}
-            </Menu>
+              <Box>
+                <Tooltip title="Open settings">
+                  <Box sx={{}}>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar alt="Christan" src="#" />
+                    </IconButton>
+                  </Box>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {NAV_DROPDOWN.map(({ label, icon }, key) => (
+                    <MenuItem
+                      key={key}
+                      onClick={handleCloseUserMenu}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        gap: '10px',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {icon}
+                      <Typography textAlign="center">{label}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            </Box>
           </Box>
         </Toolbar>
       </Container>

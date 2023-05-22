@@ -1,10 +1,11 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 
 const FFButton = ({
   name,
   variant = 'contained',
   color = 'primary',
+  fontColor = 'black',
   startIcon,
   endIcon,
   buttonStyles,
@@ -18,6 +19,7 @@ const FFButton = ({
         startIcon={startIcon}
         endIcon={endIcon}
         fullWidth
+        disableElevation
         sx={{
           textTransform: 'none',
           height: '64px',
@@ -26,7 +28,7 @@ const FFButton = ({
         }}
         onClick={handleClick}
       >
-        {name}
+        <Typography>{name}</Typography>
       </Button>
     </>
   )
