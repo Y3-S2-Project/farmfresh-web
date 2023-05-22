@@ -1,8 +1,9 @@
 import React from 'react'
+import FFButton from '../../components/atoms/FFButton/FFButton'
 import FFTable from '../../components/molecules/FFTable/FFTable'
-import FFSingleCartItem from '../../components/atoms/FFSingleCartItem/FFSingleCartItem'
-import FFTableHead from '../../components/atoms/FFTableHead/FFTableHead'
-import FFTableBody from '../../components/molecules/FFTableBody/FFTableBody'
+import FFSingleCartItem from '../../components/molecules/FFSingleCartItem/FFSingleCartItem'
+import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
+import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
 import productImage from '../../assets/cart/Ellipse 6.png'
 
 const Index = () => {
@@ -12,6 +13,7 @@ const Index = () => {
       {/* header */}
       {/* <Paper className="shadow-sm rounded-xl xl:py-3 xl:px-20 mx-16 mt-2"></Paper> */}
       {/* single row */}
+      <FFButton color="primary" name="Check" />
       <div className="m-4">
         <FFTable>
           <FFTableHead
