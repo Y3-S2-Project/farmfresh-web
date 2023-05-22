@@ -24,7 +24,7 @@ const FFAdminOrderCard = ({ svg, name, value }) => {
              justifyContent: 'center',
            }}
          >
-           <img src={svg} alt="Icon" style={{ width: 50, height: 50 }} />
+          {svg}
          </Box>
          <br></br>
          <Typography
