@@ -28,7 +28,7 @@ const FFButton = ({
         }}
         onClick={handleClick}
       >
-        <Typography color={fontColor}>{name}</Typography>
+        <Typography>{name}</Typography>
       </Button>
     </>
   )
