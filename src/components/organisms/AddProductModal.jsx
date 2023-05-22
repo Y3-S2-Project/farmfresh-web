@@ -172,7 +172,10 @@ const AddProductDetail = () => {
   return (
     <>
       <div
-        onClick={(e) => dispatch(addProductModal(false))}
+        onClick={() => {
+          console.log('background clicked')
+          dispatch(addProductModal(false))
+        }}
         className={`${
           add_product_detail_modal ? '' : 'hidden'
         } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
@@ -432,6 +435,7 @@ const AddProductDetail = () => {
               </div>
             </div>
             <div className="flex flex-row space-y-1 w-full pb-4 md:pb-6 mt-4 justify-end">
+              {/* button needs to be replaced */}
               <button
                 type="button"
                 onClick={(e) => handleSubmit(e)}
