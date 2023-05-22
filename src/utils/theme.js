@@ -22,7 +22,7 @@ export const theme = createTheme({
       contrastText: '#1f4647',
     },
     notifyBadge: {
-      main: '#EF4444',
+      main: '#ef4444',
       contrastText: '#fff',
     },
     text: {
