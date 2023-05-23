@@ -11,11 +11,15 @@ import {
   getAllProducts,
   addProductModal,
 } from '../../redux/features/productSlice'
-
-import { Table } from '../../components/organisms/Table'
+import FFTable from '../../components/molecules/FFTable/FFTable'
+import FFTableHead from '../../components/atoms/FFTableHead/FFTableHead'
+import FFTableBody from '../../components/molecules/FFTableBody/FFTableBody'
+import AlertModal from '../../components/organisms/AlertModal'
+import FFProductTableData from '../../components/atoms/FFProductTableData/FFProductTableData'
 import { TABLE_HEADER_CONTENT } from '../../util/constant'
 import FFButton from '../../components/atoms/FFButton'
 import AddProductDetail from '../../components/organisms/AddProductModal'
+
 const AdminProductPage = () => {
   const dispatch = useDispatch()
 
@@ -29,13 +33,19 @@ const AdminProductPage = () => {
     if (responseMessage !== 'All products') {
       dispatch(getAllProducts())
     }
+    localStorage.setItem('userRole', 'farmer')
   }, [dispatch, responseMessage])
 
   let content = null
   if (loadingStatus) {
     content = <p>"Loading..."</p>
   } else if (successStatus) {
-    content = <Table productList={productList} headers={TABLE_HEADER_CONTENT} />
+    content = (
+      <FFTable>
+        <FFTableHead columns={TABLE_HEADER_CONTENT} />
+        <FFTableBody rows={productList} SingleItem={FFProductTableData} />
+      </FFTable>
+    )
   } else if (errorStatus) {
     content = <p>{responseMessage}</p>
   }
@@ -70,6 +80,7 @@ const AdminProductPage = () => {
           },
         }}
       />
+      <AlertModal />
       <AddProductDetail /> {content}
     </div>
   )

@@ -269,26 +269,24 @@ const AddProductDetail = () => {
                 </span>
                 {imageAdded && (
                   <div className="mt-3">
-                    {fData.product_images.map((image, index) => ({
-                      /* <Badge
-                        pill
-                        variant="secondary"
-                        className="mr-2 mb-2"
-                        style={{ padding: '0.5rem' }}
+                    {fData.product_images.map((image, index) => (
+                      <span
                         key={index}
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-200 text-gray-800 mr-2 mb-2"
                       >
                         {image.split('?alt=media&token=')[0].split('%2F').pop()}
-                        <span
-                          aria-hidden="true"
-                          style={{ cursor: 'pointer' }}
+                        <button
+                          type="button"
+                          className="ml-1.5 text-gray-500 hover:text-gray-700 transition-all duration-150"
                           onClick={(e) => handleImageRemove(image, e)}
                         >
                           &times;
-                        </span>
-                      </Badge> */
-                    }))}
+                        </button>
+                      </span>
+                    ))}
                   </div>
                 )}
+
                 <div
                   style={{ cursor: 'pointer' }}
                   onClick={handleButtonClick}

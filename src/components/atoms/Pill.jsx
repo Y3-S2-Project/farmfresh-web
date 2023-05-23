@@ -53,7 +53,7 @@ export const Pill = ({ type }) => {
           </svg>
         </div>
       )
-    case true:
+    case 'accepted':
       return (
         <div>
           <svg
@@ -78,7 +78,7 @@ export const Pill = ({ type }) => {
           </svg>
         </div>
       )
-    case false:
+    case 'rejected':
       return (
         <div>
           <svg

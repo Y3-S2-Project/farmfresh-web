@@ -7,9 +7,7 @@ import {
 } from '../../../../../services/productService'
 
 import { Badge } from 'react-bootstrap'
-import { imageUpload, removeImage } from '../../../../../utils/imagesFunctions'
-import { categories } from '../../../../../data/dumyCategories'
-import { editProduct } from '../../../../../services/productService'
+import { imageUpload, removeImage } from '../../utils/imagesFunctions'
 
 const EditProductModal = (props) => {
   const { data, dispatch } = useContext(ProductContext)
@@ -25,35 +23,34 @@ const EditProductModal = (props) => {
   )
 
   const [editformData, setEditformdata] = useState({
-    pId: '',
-    pPid: '',
-    pName: '',
-    pDescription: '',
-    pImages: [],
-    pStatus: '',
-    pCategory: '',
-    pQuantity: '',
-    pPrice: '',
-    pOffer: '',
-    pWeight: '',
-    error: false,
+    product_name: '',
+    product_price: 0.0,
+    product_status: '',
+    product_category: '',
+    product_offer: 0.0,
+    product_images: [],
+    product_quantity: 0,
+    product_visible: true,
+    product_weight: 0.0,
+    product_sale_status: false,
     success: false,
+    error: false,
   })
 
   useEffect(() => {
     setEditformdata({
-      pId: data.editProductModal.pId,
-      pPid: data.editProductModal.pPid,
-      pName: data.editProductModal.pName,
-      pDescription: data.editProductModal.pDescription,
-      pImages: data.editProductModal.pImages,
-      pStatus: data.editProductModal.pStatus,
-      pCategory: data.editProductModal.pCategory,
-      pQuantity: data.editProductModal.pQuantity,
-      pPrice: data.editProductModal.pPrice,
-
-      pOffer: data.editProductModal.pOffer,
-      pWeight: data.editProductModal.pWeight,
+      product_name: '',
+      product_price: 0.0,
+      product_status: '',
+      product_category: '',
+      product_offer: 0.0,
+      product_images: [],
+      product_quantity: 0,
+      product_visible: true,
+      product_weight: 0.0,
+      product_sale_status: false,
+      success: false,
+      error: false,
     })
   }, [data.editProductModal])
 
