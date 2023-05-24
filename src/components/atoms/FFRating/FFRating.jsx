@@ -20,7 +20,6 @@ const FFRating = ({ value, handleRatingChange, size, ratingStyles }) => {
           alignItems: 'center',
           justifyContent: 'flex-start',
           marginInline: '20px',
-          marginTop: '24px',
           ...ratingStyles,
         }}
       >
