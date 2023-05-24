@@ -1,12 +1,13 @@
 import React from 'react'
 import FFAdminOrderCard from '../../components/atoms/FFAdminOrderCard'
 import FFStatusBadges from '../../components/atoms/FFStatusBadges'
+import PendingOrderIcon from '../../assets/icons/PendingOrderIcon'
 
 const OrderAdmin = () => {
   return (
     <div>
       <FFAdminOrderCard
-        svg="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+        svg={<PendingOrderIcon />}
         name="Total Orders"
         value="100"
       />
