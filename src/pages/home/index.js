@@ -5,6 +5,8 @@ import FFSingleCartItem from '../../components/molecules/FFSingleCartItem/FFSing
 import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
 import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
 import productImage from '../../assets/cart/Ellipse 6.png'
+import FFReviewManageModal from '../../components/molecules/FFModal/FFReviewManageModal'
+import ColouredNotepadIcon from '../../assets/icons/ColouredNotepadIcon'
 
 const Index = () => {
   return (
@@ -13,7 +15,7 @@ const Index = () => {
       {/* header */}
       {/* <Paper className="shadow-sm rounded-xl xl:py-3 xl:px-20 mx-16 mt-2"></Paper> */}
       {/* single row */}
-      <FFButton color="primary" name="Check" />
+      {/* <FFButton color="primary" name="Check" />
       <div className="m-4">
         <FFTable>
           <FFTableHead
@@ -21,7 +23,12 @@ const Index = () => {
           />
           <FFTableBody rows={ROWS} SingleItem={FFSingleCartItem} />
         </FFTable>
-      </div>
+      </div> */}
+      <FFReviewManageModal
+        title={'Write a Review'}
+        subTitle={'Share your thoughts about this product'}
+        topLeftIcon={<ColouredNotepadIcon />}
+      />
     </>
   )
 }
