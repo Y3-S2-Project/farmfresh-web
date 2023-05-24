@@ -28,5 +28,5 @@ export const deleteProduct = async (product_id) => {
 }
 
 export const chageVisiblity = async (product_id) => {
-  return await axios.patch(`//products/${product_id}`)
+  return await axios.patch(`/products/${product_id}`)
 }

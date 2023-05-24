@@ -3,20 +3,20 @@ import { DUMMY_CATEGORIES } from '../../utils/constants'
 import { imageUpload, removeImage } from '../../utils/imagesFunctions'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  add_product_modal,
-  postProduct,
-  getAllProducts,
+  add_category_modal,
+  postCategory,
+  getAllCategories,
   isSuccess,
   isError,
-  addProductModal,
-} from '../../redux/features/productSlice'
+  addCategoryModal,
+} from '../../redux/features/categorySlice'
 
-const AddProductDetail = () => {
+const AddCategoryModal = () => {
   const dispatch = useDispatch()
-  const add_product_detail_modal = useSelector(add_product_modal)
+  const add_category_detail_modal = useSelector(add_category_modal)
   const succesStatus = useSelector(isSuccess)
   const errorStatus = useSelector(isError)
-  const [categories, setCtegories] = useState(DUMMY_CATEGORIES)
+
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
   )
@@ -29,29 +29,27 @@ const AddProductDetail = () => {
   const [imageAdded, setImageAdded] = useState(false)
 
   const [fData, setFdata] = useState({
-    product_name: '',
-    product_price: 0.0,
-    product_status: '',
-    product_category: '',
-    product_offer: 0.0,
-    product_images: [],
-    product_quantity: 0,
-    product_visible: true,
-    product_weight: 0.0,
-    product_sale_status: false,
+    category_id: '',
+    category_name: '',
+    category_status: '',
+    category_description: '',
+    category_image: '',
     success: false,
     error: false,
   })
-
+  useEffect(() => {
+    console.log(add_category_detail_modal)
+  }, [])
   useEffect(() => {
     setImageAdded(true)
     setSelectedFile(null)
-  }, [fData?.product_images])
+    console.log(add_category_detail_modal)
+  }, [fData?.category_image])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (fData.product_images?.length > 1) {
+    if (fData.category_image) {
       setFdata({ ...fData, error: 'Please upload at least 1 image' })
       setTimeout(() => {
         setFdata({ ...fData, error: false })
@@ -59,38 +57,25 @@ const AddProductDetail = () => {
     }
 
     try {
-      dispatch(postProduct(fData))
+      dispatch(postCategory(fData))
 
       if (succesStatus) {
-        dispatch(getAllProducts())
+        dispatch(getAllCategories())
         setFdata({
-          ...fData,
-          product_name: '',
-          product_price: 0.0,
-          product_status: '',
-          product_category: '',
-          product_offer: 0.0,
-          product_images: [],
-          product_quantity: 0,
-          product_visible: true,
-          product_weight: 0.0,
-          product_sale_status: false,
+          category_name: '',
+          category_status: '',
+          category_description: '',
+          category_image: '',
           success: succesStatus,
           error: false,
         })
         setTimeout(() => {
           setFdata({
             ...fData,
-            product_name: '',
-            product_price: 0.0,
-            product_status: '',
-            product_category: '',
-            product_offer: 0.0,
-            product_images: [],
-            product_quantity: 0,
-            product_visible: true,
-            product_weight: 0.0,
-            product_sale_status: false,
+            category_name: '',
+            category_status: '',
+            category_description: '',
+            category_image: '',
             success: false,
             error: false,
           })
@@ -136,7 +121,7 @@ const AddProductDetail = () => {
           ...prevState,
           error: false,
           success: false,
-          product_images: [...prevState.product_images, imageUrl],
+          category_image: imageUrl,
         }))
         console.log(imageUrl)
         setSelectedFile(null)
@@ -156,9 +141,7 @@ const AddProductDetail = () => {
           ...prevState,
           error: false,
           success: false,
-          product_images: prevState.product_images.filter(
-            (url) => url !== imageUrl,
-          ),
+          category_image: '',
         })),
 
         console.log('Image removed from Firebase Storage'),
@@ -174,10 +157,10 @@ const AddProductDetail = () => {
       <div
         onClick={() => {
           console.log('background clicked')
-          dispatch(addProductModal(false))
+          dispatch(addCategoryModal(false))
         }}
         className={`${
-          add_product_detail_modal ? '' : 'hidden'
+          add_category_detail_modal ? '' : 'hidden'
         } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
       />
       {/* End Black Overlay */}
@@ -185,18 +168,18 @@ const AddProductDetail = () => {
       {/* Modal Start */}
       <div
         className={`${
-          add_product_detail_modal ? '' : 'hidden'
+          add_category_detail_modal ? '' : 'hidden'
         } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
       >
         <div className="mt-4 md:mt-0 relative bg-[#F5F3F0] w-8/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
           <div className="flex items-center justify-between w-full pt-4">
             <span className="text-left font-semibold text-2xl tracking-wider">
-              Add Product
+              Add Category
             </span>
             {/* Close Modal */}
             <span
               style={{ background: '#626262' }}
-              onClick={(e) => dispatch(addProductModal(false))}
+              onClick={(e) => dispatch(addCategoryModal(false))}
               className="cursor-pointer text-gray-100 py-2 px-2 rounded-full"
             >
               <svg
@@ -224,38 +207,47 @@ const AddProductDetail = () => {
           <form className="w-full">
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1 space-x-1">
-                <label htmlFor="name">Product Name </label>
+                <label htmlFor="name">Category Name </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={fData.product_name}
+                  value={fData.category_name}
                   onChange={(e) =>
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
-                      product_name: e.target.value,
+                      category_name: e.target.value,
                     })
                   }
                   className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   type="text"
                 />
               </div>
-              <div className="w-1/2 flex flex-col space-y-1 space-x-1">
-                <label htmlFor="price">Product Price (Rs.) </label>
+
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="status">Category Status </label>
                 <span className="text-red-600 text-xs">* Required</span>
-                <input
-                  value={fData.product_price}
+                <select
+                  value={fData.category_status}
                   onChange={(e) =>
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
-                      product_price: e.target.value,
+                      category_status: e.target.value,
                     })
                   }
+                  name="status"
                   className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
-                  id="price"
-                />
+                  id="status"
+                >
+                  <option name="status" value="Available">
+                    Available
+                  </option>
+                  <option name="status" value="Unavailable">
+                    Unavailable
+                  </option>
+                </select>
               </div>
             </div>
 
@@ -269,21 +261,23 @@ const AddProductDetail = () => {
                 </span>
                 {imageAdded && (
                   <div className="mt-3">
-                    {fData.product_images.map((image, index) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-200 text-gray-800 mr-2 mb-2"
-                      >
-                        {image.split('?alt=media&token=')[0].split('%2F').pop()}
+                    {fData.category_image && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-200 text-gray-800 mr-2 mb-2">
+                        {fData.category_image
+                          .split('?alt=media&token=')[0]
+                          .split('%2F')
+                          .pop()}
                         <button
                           type="button"
                           className="ml-1.5 text-gray-500 hover:text-gray-700 transition-all duration-150"
-                          onClick={(e) => handleImageRemove(image, e)}
+                          onClick={(e) =>
+                            handleImageRemove(fData.category_image, e)
+                          }
                         >
                           &times;
                         </button>
                       </span>
-                    ))}
+                    )}
                   </div>
                 )}
 
@@ -319,119 +313,28 @@ const AddProductDetail = () => {
                   ref={fileInputRef}
                 />
               </div>
-              <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="weight">Product Weight (Kg)</label>
+              <div className="flex w-1/2  flex-col space-y-2">
+                <label htmlFor="description">Category Description</label>
                 <span className="text-red-600 text-xs">* Required</span>
-                <input
-                  value={fData.product_weight}
+                <textarea
+                  value={fData.category_description}
                   onChange={(e) =>
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
-                      product_weight: e.target.value,
+                      category_description: e.target.value,
                     })
                   }
-                  className="px-4 py-2 border h-14 rounded-lg focus:outline-none "
-                  id="weight"
+                  className="px-4 py-2 border rounded-lg  focus:outline-none"
+                  name="description"
+                  id="description"
+                  cols={5}
+                  rows={8}
                 />
               </div>
             </div>
-            {/* Most Important part for uploading multiple image */}
-            <div className="flex space-x-1 py-4">
-              <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="status">Product Status </label>
-                <span className="text-red-600 text-xs">* Required</span>
-                <select
-                  value={fData.product_status}
-                  onChange={(e) =>
-                    setFdata({
-                      ...fData,
-                      error: false,
-                      success: false,
-                      product_status: e.target.value,
-                    })
-                  }
-                  name="status"
-                  className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
-                  id="status"
-                >
-                  <option name="status" value="in stock">
-                    In Stock
-                  </option>
-                  <option name="status" value="out of stock">
-                    Out Of Stock
-                  </option>
-                </select>
-              </div>
-              <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="status">Product Category </label>
-                <span className="text-red-600 text-xs">* Required</span>
-                <select
-                  value={fData.product_category}
-                  onChange={(e) =>
-                    setFdata({
-                      ...fData,
-                      error: false,
-                      success: false,
-                      product_category: e.target.value,
-                    })
-                  }
-                  name="status"
-                  className="px-4 py-2 border h-14 focus:outline-none"
-                  id="status"
-                >
-                  <option disabled value="">
-                    Select a category
-                  </option>
-                  {categories.length > 0
-                    ? categories.map(function (elem) {
-                        return (
-                          <option name="status" value={elem._id} key={elem._id}>
-                            {elem.category_name}
-                          </option>
-                        )
-                      })
-                    : ''}
-                </select>
-              </div>
-            </div>
-            <div className="flex space-x-1 py-4">
-              <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="quantity">Product in Stock </label>
-                <span className="text-red-600 text-xs">* Required</span>
-                <input
-                  value={fData.product_quantity}
-                  onChange={(e) =>
-                    setFdata({
-                      ...fData,
-                      error: false,
-                      success: false,
-                      product_quantity: e.target.value,
-                    })
-                  }
-                  className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
-                  id="quantity"
-                />
-              </div>
-              <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="offer">Product Offfer (%) </label>
-                <span className="text-red-600 text-xs">* Required</span>
-                <input
-                  value={fData.product_offer}
-                  onChange={(e) =>
-                    setFdata({
-                      ...fData,
-                      error: false,
-                      success: false,
-                      product_offer: e.target.value,
-                    })
-                  }
-                  className="px-4 py-2 border  h-14 rounded-lg focus:outline-none"
-                  id="offer"
-                />
-              </div>
-            </div>
+
             <div className="flex flex-row space-y-1 w-full pb-4 md:pb-6 mt-4 justify-end">
               {/* button needs to be replaced */}
               <button
@@ -442,7 +345,7 @@ const AddProductDetail = () => {
                 }}
                 className="rounded-xl  w-32 text-gray-100 text-lg font-medium py-2"
               >
-                Add product
+                Add Category
               </button>
             </div>
           </form>
@@ -452,4 +355,4 @@ const AddProductDetail = () => {
   )
 }
 
-export default AddProductDetail
+export default AddCategoryModal

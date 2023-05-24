@@ -1,21 +1,27 @@
-import React, { Fragment, useContext, useState, useEffect, useRef } from 'react'
-import { ProductContext } from '../Products'
-
+import React, { Fragment, useState, useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { DUMMY_CATEGORIES } from '../../utils/constants'
 import {
-  createProduct,
-  getSellerAllProduct,
-} from '../../../../../services/productService'
+  edit_product_modal,
+  getAllProducts,
+  isSuccess,
+  isError,
+  editProductModalOpen,
+  updateProduct,
+} from '../../redux/features/productSlice'
 
-import { Badge } from 'react-bootstrap'
 import { imageUpload, removeImage } from '../../utils/imagesFunctions'
 
 const EditProductModal = (props) => {
-  const { data, dispatch } = useContext(ProductContext)
+  const dispatch = useDispatch()
+  const edit_product_detail_modal = useSelector(edit_product_modal)
+  const succesStatus = useSelector(isSuccess)
+  const errorStatus = useSelector(isError)
 
   const [selectedFile, setSelectedFile] = useState(null)
   const [error, setError] = useState('')
   const fileInputRef = useRef(null)
-
+  const [categories, setCtegories] = useState(DUMMY_CATEGORIES)
   const [imageAdded, setImageAdded] = useState(false)
 
   const alert = (msg, type) => (
@@ -39,58 +45,50 @@ const EditProductModal = (props) => {
 
   useEffect(() => {
     setEditformdata({
-      product_name: '',
-      product_price: 0.0,
-      product_status: '',
-      product_category: '',
-      product_offer: 0.0,
-      product_images: [],
-      product_quantity: 0,
-      product_visible: true,
-      product_weight: 0.0,
-      product_sale_status: false,
-      success: false,
-      error: false,
+      product_name: edit_product_detail_modal.product_name,
+      product_price: edit_product_detail_modal.product_price,
+      product_status: edit_product_detail_modal.product_status,
+      product_category: edit_product_detail_modal.product_category,
+      product_offer: edit_product_detail_modal.product_offer,
+      product_images: edit_product_detail_modal.product_images,
+      product_quantity: edit_product_detail_modal.product_quantity,
+      product_visible: edit_product_detail_modal.product_visible,
+      product_weight: edit_product_detail_modal.product_weight,
+      product_sale_status: edit_product_detail_modal.product_sale_status,
     })
-  }, [data.editProductModal])
+  }, [edit_product_detail_modal])
 
   useEffect(() => {
     setImageAdded(true)
-  }, [editformData?.pImages])
-  const fetchData = async () => {
-    let responseData = await getSellerAllProduct()
-    if (responseData) {
-      dispatch({
-        type: 'fetchProductsAndChangeState',
-        payload: responseData.data,
-      })
-    }
-  }
+  }, [editformData?.product_images])
 
   const submitForm = async (e) => {
     e.preventDefault()
-    if (editformData.pImages > 1) {
+    if (editformData?.product_images > 1) {
       console.log('UploaImage ')
     } else {
       console.log('Image uploading')
     }
     try {
-      let responseData = await editProduct(editformData)
-      if (responseData.success) {
-        fetchData()
-        setEditformdata({ ...editformData, success: responseData.success })
+      dispatch(
+        updateProduct(editformData, edit_product_detail_modal.product_id),
+      )
+      if (succesStatus) {
+        dispatch(getAllProducts())
+        setEditformdata({ ...editformData, success: succesStatus })
         setTimeout(() => {
           return setEditformdata({
             ...editformData,
-            success: responseData.success,
+            success: succesStatus,
           })
         }, 2000)
-      } else if (responseData.error) {
-        setEditformdata({ ...editformData, error: responseData.error })
+      } else if (errorStatus) {
+        setEditformdata({ ...editformData, error: errorStatus })
         setTimeout(() => {
           return setEditformdata({
             ...editformData,
-            error: responseData.error,
+            error: false,
+            success: false,
           })
         }, 2000)
       }
@@ -128,7 +126,7 @@ const EditProductModal = (props) => {
           ...prevState,
           error: false,
           success: false,
-          pImages: [...prevState.pImages, imageUrl],
+          product_images: [...prevState.product_images, imageUrl],
         }))
         console.log(imageUrl)
         setSelectedFile(null)
@@ -148,7 +146,9 @@ const EditProductModal = (props) => {
           ...prevState,
           error: false,
           success: false,
-          pImages: prevState.pImages.filter((url) => url !== imageUrl),
+          product_images: prevState.product_images.filter(
+            (url) => url !== imageUrl,
+          ),
         })),
 
         console.log('Image removed from Firebase Storage'),
@@ -163,36 +163,32 @@ const EditProductModal = (props) => {
     <>
       {/* Black Overlay */}
       <div
-        onClick={(e) =>
-          dispatch({ type: 'editProductModalClose', payload: false })
-        }
+        onClick={(e) => dispatch(editProductModalOpen({ open: false }))}
         className={`${
-          data.editProductModal.modal ? '' : 'tw-hidden'
-        } tw-fixed tw-top-0 tw-left-0 tw-z-30 tw-w-full tw-h-full tw-bg-black tw-opacity-50`}
+          edit_product_detail_modal.modal ? '' : 'hidden'
+        } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
       />
       {/* End Black Overlay */}
 
       {/* Modal Start */}
       <div
         className={`${
-          data.editProductModal.modal ? '' : 'tw-hidden'
-        } tw-fixed tw-inset-0 tw-flex tw-items-center tw-z-30 tw-justify-center tw-overflow-auto`}
+          edit_product_detail_modal.modal ? '' : 'hidden'
+        } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
       >
-        <div className="tw-mt-4 tw-md:mt-0 tw-relative tw-bg-white  tw-w-8/12 tw-md:w-3/6 tw-shadow-lg tw-flex tw-flex-col tw-items-center tw-space-y-4 tw-px-4 tw-py-4 tw-md:px-8">
-          <div className="tw-flex tw-items-center tw-justify-between tw-w-full tw-pt-4">
-            <span className="tw-text-left tw-font-semibold tw-text-2xl tw-tracking-wider">
+        <div className="mt-4 md:mt-0 relative bg-[#F5F3F0] w-8/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
+          <div className="flex items-center justify-between w-full pt-4">
+            <span className="text-left font-semibold text-2xl tracking-wider">
               Edit Product
             </span>
             {/* Close Modal */}
             <span
-              style={{ background: '#303031' }}
-              onClick={(e) =>
-                dispatch({ type: 'editProductModalClose', payload: false })
-              }
-              className="tw-cursor-pointer tw-text-gray-100 tw-py-2 tw-px-2 tw-rounded-full"
+              style={{ background: '#626262' }}
+              onClick={(e) => dispatch(editProductModalOpen({ open: false }))}
+              className="cursor-pointer text-gray-100 py-2 px-2 rounded-full"
             >
               <svg
-                className="tw-w-6 tw-h-6"
+                className="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -209,104 +205,92 @@ const EditProductModal = (props) => {
           </div>
           {editformData.error ? alert(editformData.error, 'red') : ''}
           {editformData.success ? alert(editformData.success, 'green') : ''}
-          <form className="tw-w-full" onSubmit={(e) => submitForm(e)}>
-            <div className="tw-flex tw-space-x-1 tw-py-4">
-              <div className="tw-w-1/2 tw-flex tw-flex-col tw-space-y-1 tw-space-x-1">
-                <label htmlFor="name">Product Name *</label>
+          <form className="w-full" onSubmit={(e) => submitForm(e)}>
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1 space-x-1">
+                <label htmlFor="name">Product Name </label>
+                <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.pName}
+                  value={editformData.product_name}
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
-                      pName: e.target.value,
+                      product_name: e.target.value,
                     })
                   }
-                  className="tw-px-4 tw-py-2 tw-border tw-focus:outline-none"
+                  className="px-4 py-2 border  h-14 focus:outline-none"
                   type="text"
                 />
               </div>
-              <div className="tw-w-1/2 tw-flex tw-flex-col tw-space-y-1 tw-space-x-1">
-                <label htmlFor="price">Product Price *</label>
+              <div className="w-1/2 flex flex-col space-y-1 space-x-1">
+                <label htmlFor="price">Product Price (Rs.) </label>
+                <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.pPrice}
+                  value={editformData.product_price}
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
-                      pPrice: e.target.value,
+                      product_price: e.target.value,
                     })
                   }
                   type="number"
-                  className="tw-px-4 tw-py-2 tw-border tw-focus:outline-none"
+                  className="px-4 py-2 border  h-14 focus:outline-none"
                   id="price"
                 />
               </div>
             </div>
-            <div className="tw-flex tw-flex-col tw-space-y-2">
-              <label htmlFor="description">Product Description *</label>
-              <textarea
-                value={editformData.pDescription}
-                onChange={(e) =>
-                  setEditformdata({
-                    ...editformData,
-                    error: false,
-                    success: false,
-                    pDescription: e.target.value,
-                  })
-                }
-                className="tw-px-4 tw-py-2 tw-border tw-focus:outline-none"
-                name="description"
-                id="description"
-                cols={5}
-                rows={2}
-              />
-            </div>
+
             {/* Most Important part for uploading multiple image */}
-            <div className="tw-flex tw-space-x-1 tw-py-4">
-              <div className="tw-flex tw-w-1/2  tw-flex-col tw-mt-4">
-                <label htmlFor="image">Product Images *</label>
-                <span className="tw-text-gray-600 tw-text-xs">
-                  Must need 1 image
+            <div className="flex space-x-1 py-4">
+              <div className="flex w-1/2  flex-col mt-4">
+                <label htmlFor="image">Image Upload</label>
+                <span className="text-red-600 text-xs">
+                  * Must need 1 image
                 </span>
                 {imageAdded && (
-                  <div className="tw-mt-3">
-                    {editformData.pImages.map((image, index) => (
-                      <Badge
-                        pill
-                        variant="secondary"
-                        className="tw-mr-2 tw-mb-2"
-                        style={{ padding: '0.5rem' }}
-                      >
-                        {image.split('?alt=media&token=')[0].split('%2F').pop()}
+                  <div className="mt-3">
+                    {editformData?.product_images &&
+                      editformData?.product_images.map((image, index) => (
                         <span
-                          aria-hidden="true"
-                          style={{ cursor: 'pointer' }}
-                          onClick={(e) => handleImageRemove(image, e)}
+                          key={image}
+                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-200 text-gray-800 mr-2 mb-2"
                         >
-                          &times;
+                          {image
+                            .split('?alt=media&token=')[0]
+                            .split('%2F')
+                            .pop()}
+                          <button
+                            type="button"
+                            className="ml-1.5 text-gray-500 hover:text-gray-700 transition-all duration-150"
+                            onClick={(e) => handleImageRemove(image, e)}
+                          >
+                            &times;
+                          </button>
                         </span>
-                      </Badge>
-                    ))}
+                      ))}
                   </div>
                 )}
                 <div
                   style={{ cursor: 'pointer' }}
                   onClick={handleButtonClick}
-                  className="tw-flex tw-flex-col tw-mt-4"
+                  className="flex flex-col mt-4"
                 >
-                  <div className="tw-mt-3">
+                  <div className="mt-3">
                     {selectedFile ? (
-                      <Badge
+                      {
+                        /* <Badge
                         pill
                         variant="secondary"
-                        className="tw-mr-2 tw-mb-2"
+                        className="mr-2 mb-2"
                         style={{ padding: '0.5rem' }}
                       >
                         {URL.createObjectURL(selectedFile)}
-                      </Badge>
+                      </Badge> */
+                      }
                     ) : (
                       <p></p>
                     )}
@@ -322,40 +306,42 @@ const EditProductModal = (props) => {
                   ref={fileInputRef}
                 />
               </div>
-              <div className="tw-w-1/2 tw-flex tw-flex-col tw-space-y-1">
-                <label htmlFor="weight">Product Weight * (Kg)</label>
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="weight">Product Weight (Kg)</label>
+                <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.pWeight}
+                  value={editformData.product_weight}
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
-                      pWeight: e.target.value,
+                      product_weight: e.target.value,
                     })
                   }
-                  className="tw-px-4 tw-py-2 tw-border tw-focus:outline-none"
+                  className="px-4 py-2   h-14 border focus:outline-none"
                   id="weight"
                 />
               </div>
             </div>
 
             {/* Most Important part for uploading multiple image */}
-            <div className="tw-flex tw-space-x-1 tw-py-4">
-              <div className="tw-w-1/2 tw-flex tw-flex-col tw-space-y-1">
-                <label htmlFor="status">Product Status *</label>
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="status">Product Status </label>
+                <span className="text-red-600 text-xs">* Required</span>
                 <select
-                  value={editformData.pStatus}
+                  value={editformData.product_status}
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
-                      pStatus: e.target.value,
+                      product_status: e.target.value,
                     })
                   }
                   name="status"
-                  className="tw-px-4 tw-py-2 tw-border tw-focus:outline-none"
+                  className="px-4 py-2  h-14 border focus:outline-none"
                   id="status"
                 >
                   <option name="status" value="Available">
@@ -366,19 +352,20 @@ const EditProductModal = (props) => {
                   </option>
                 </select>
               </div>
-              <div className="tw-w-1/2 tw-flex tw-flex-col tw-space-y-1">
-                <label htmlFor="status">Product Category *</label>
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="status">Product Category </label>
+                <span className="text-red-600 text-xs">* Required</span>
                 <select
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
-                      pCategory: e.target.value,
+                      product_category: e.target.value,
                     })
                   }
                   name="status"
-                  className="tw-px-4 tw-py-2 tw-border tw-focus:outline-none"
+                  className="px-4 py-2 border  h-14 focus:outline-none"
                   id="status"
                 >
                   <option disabled value="">
@@ -386,14 +373,14 @@ const EditProductModal = (props) => {
                   </option>
                   {categories.map((elem) => {
                     return (
-                      <Fragment key={elem}>
+                      <Fragment key={elem._id}>
                         <option
                           name="status"
                           value={elem._id}
                           key={elem._id}
                           selected
                         >
-                          {elem}
+                          {elem.category_name}
                         </option>
                       </Fragment>
                     )
@@ -401,47 +388,49 @@ const EditProductModal = (props) => {
                 </select>
               </div>
             </div>
-            <div className="tw-flex tw-space-x-1 tw-py-4">
-              <div className="tw-w-1/2 tw-flex tw-flex-col tw-space-y-1">
-                <label htmlFor="quantity">Product in Stock *</label>
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="quantity">Product in Stock </label>
+                <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.pQuantity}
+                  value={editformData.product_quantity}
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
-                      pQuantity: e.target.value,
+                      product_quantity: e.target.value,
                     })
                   }
                   type="number"
-                  className="tw-px-4 tw-py-2 tw-border tw-focus:outline-none"
+                  className="px-4 py-2 border  h-14 focus:outline-none"
                   id="quantity"
                 />
               </div>
-              <div className="tw-w-1/2 tw-flex tw-flex-col tw-space-y-1">
-                <label htmlFor="offer">Product Offfer (%) *</label>
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="offer">Product Offfer (%) </label>
+                <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.pOffer}
+                  value={editformData.product_offer}
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
-                      pOffer: e.target.value,
+                      product_offer: e.target.value,
                     })
                   }
                   type="number"
-                  className="tw-px-4 tw-py-2 tw-border tw-focus:outline-none"
+                  className="px-4 py-2 border h-14 focus:outline-none"
                   id="offer"
                 />
               </div>
             </div>
-            <div className="tw-flex tw-flex-col tw-space-y-1 tw-w-full tw-pb-4 tw-md:pb-6 tw-mt-4">
+            <div className="flex flex-row space-y-1 w-full pb-4 md:pb-6 mt-4 justify-end">
               <button
-                style={{ background: '#303031' }}
+                style={{ background: '#626262' }}
                 type="submit"
-                className="tw-rounded-full tw-bg-gray-800 tw-text-gray-100 tw-text-lg tw-font-medium tw-py-2"
+                className="rounded-xl  w-36 text-gray-100 text-lg font-medium py-2"
               >
                 Update product
               </button>

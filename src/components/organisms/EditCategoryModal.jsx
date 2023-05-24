@@ -3,17 +3,17 @@ import { DUMMY_CATEGORIES } from '../../utils/constants'
 import { imageUpload, removeImage } from '../../utils/imagesFunctions'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  add_product_modal,
-  postProduct,
-  getAllProducts,
+  edit_category_modal,
+  getAllCategories,
   isSuccess,
   isError,
-  addProductModal,
-} from '../../redux/features/productSlice'
+  editCategoryModalOpen,
+  updateCategory,
+} from '../../redux/features/categorySlice'
 
-const AddProductDetail = () => {
+const EditCategoryModal = () => {
   const dispatch = useDispatch()
-  const add_product_detail_modal = useSelector(add_product_modal)
+  const edit_category_detail_modal = useSelector(edit_category_modal)
   const succesStatus = useSelector(isSuccess)
   const errorStatus = useSelector(isError)
   const [categories, setCtegories] = useState(DUMMY_CATEGORIES)
@@ -28,77 +28,59 @@ const AddProductDetail = () => {
 
   const [imageAdded, setImageAdded] = useState(false)
 
-  const [fData, setFdata] = useState({
-    product_name: '',
-    product_price: 0.0,
-    product_status: '',
-    product_category: '',
-    product_offer: 0.0,
-    product_images: [],
-    product_quantity: 0,
-    product_visible: true,
-    product_weight: 0.0,
-    product_sale_status: false,
+  const [editFormData, setEditformdata] = useState({
+    category_name: '',
+
+    category_status: '',
+    category_description: '',
+    category_image: '',
+
     success: false,
     error: false,
   })
+  useEffect(() => {
+    setEditformdata({
+      category_name: edit_category_detail_modal.category_name,
+
+      category_status: edit_category_detail_modal.category_image,
+      category_description: edit_category_detail_modal.category_description,
+      category_image: edit_category_detail_modal.category_image,
+    })
+  }, [edit_category_detail_modal])
 
   useEffect(() => {
     setImageAdded(true)
     setSelectedFile(null)
-  }, [fData?.product_images])
+  }, [editFormData?.product_image])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    if (fData.product_images?.length > 1) {
-      setFdata({ ...fData, error: 'Please upload at least 1 image' })
-      setTimeout(() => {
-        setFdata({ ...fData, error: false })
-      }, 2000)
+    if (editFormData?.product_image) {
+      console.log('UploaImage ')
+    } else {
+      console.log('Image uploading')
     }
-
     try {
-      dispatch(postProduct(fData))
-
+      dispatch(
+        updateCategory(editFormData, edit_category_detail_modal.product_id),
+      )
       if (succesStatus) {
         dispatch(getAllProducts())
-        setFdata({
-          ...fData,
-          product_name: '',
-          product_price: 0.0,
-          product_status: '',
-          product_category: '',
-          product_offer: 0.0,
-          product_images: [],
-          product_quantity: 0,
-          product_visible: true,
-          product_weight: 0.0,
-          product_sale_status: false,
-          success: succesStatus,
-          error: false,
-        })
+        setEditformdata({ ...editformData, success: succesStatus })
         setTimeout(() => {
-          setFdata({
-            ...fData,
-            product_name: '',
-            product_price: 0.0,
-            product_status: '',
-            product_category: '',
-            product_offer: 0.0,
-            product_images: [],
-            product_quantity: 0,
-            product_visible: true,
-            product_weight: 0.0,
-            product_sale_status: false,
-            success: false,
-            error: false,
+          return setEditformdata({
+            ...editformData,
+            success: succesStatus,
           })
         }, 2000)
       } else if (errorStatus) {
-        setFdata({ ...fData, success: false, error: errorStatus })
+        setEditformdata({ ...editformData, error: errorStatus })
         setTimeout(() => {
-          return setFdata({ ...fData, error: false, success: false })
+          return setEditformdata({
+            ...editformData,
+            error: false,
+            success: false,
+          })
         }, 2000)
       }
     } catch (error) {
@@ -452,4 +434,4 @@ const AddProductDetail = () => {
   )
 }
 
-export default AddProductDetail
+export default EditCategoryModal

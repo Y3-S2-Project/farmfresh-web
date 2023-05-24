@@ -16,9 +16,11 @@ import {
   alert_modal_type,
   alert_modal_title,
   alert_modal_body,
-  product_id,
-} from '../../redux/features/productSlice'
+  alert_modal_action,
+} from '../../redux/features/alertSlice'
+
 import { updateProductVisiblity } from '../../redux/features/productSlice'
+
 import WarningIcon from '@mui/icons-material/Warning'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -66,7 +68,7 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 }
-const DialogBody = ({ type, handleClose, body }) => {
+const DialogBody = ({ type, handleClose, body, handleClick }) => {
   return (
     <div>
       <DialogContent dividers>
@@ -75,10 +77,10 @@ const DialogBody = ({ type, handleClose, body }) => {
         </Typography>
       </DialogContent>
       <div className="flex flex-col">
-        {type === 'product-delete' ? (
+        {type === 'product-delete' || type === 'category-delete' ? (
           <Button
             variant="contained"
-            onClick={handleClose}
+            onClick={handleClick}
             style={{
               backgroundColor: '#FEE2E2',
               color: '#7F1D1D',
@@ -95,7 +97,7 @@ const DialogBody = ({ type, handleClose, body }) => {
         ) : type === 'product-reject' ? (
           <Button
             variant="contained"
-            onClick={handleClose}
+            onClick={handleClick}
             style={{
               backgroundColor: '#FEE2E2',
               color: '#7F1D1D',
@@ -112,7 +114,7 @@ const DialogBody = ({ type, handleClose, body }) => {
         ) : type === 'product-accept' ? (
           <Button
             variant="contained"
-            onClick={handleClose}
+            onClick={handleClick}
             style={{
               backgroundColor: 'rgba(100, 191, 71, 0.2)',
               color: '#1F4647',
@@ -168,12 +170,12 @@ export default function AlertModal() {
   const title = useSelector(alert_modal_title)
   const body = useSelector(alert_modal_body)
   const type = useSelector(alert_modal_type)
-  const productId = useSelector(product_id)
+  const alert_action = useSelector(alert_modal_action)
 
   return (
     <div
       onClick={() => {
-        dispatch(alertModalOpen(false))
+        dispatch(alertModalOpen({ open: false }))
       }}
       className={`${
         alert_modal_open ? '' : 'hidden'
@@ -181,7 +183,7 @@ export default function AlertModal() {
     >
       <BootstrapDialog
         onClose={() => {
-          dispatch(alertModalOpen(false))
+          dispatch(alertModalOpen({ open: false }))
         }}
         aria-labelledby="customized-dialog-title"
         open={alert_modal_open}
@@ -199,7 +201,7 @@ export default function AlertModal() {
           id="customized-dialog-title"
           title={title}
           onClose={() => {
-            dispatch(alertModalOpen(false))
+            dispatch(alertModalOpen({ open: false }))
           }}
         >
           <WarningIcon style={{ color: 'yellow', backgroundColor: 'white' }} />
@@ -207,9 +209,9 @@ export default function AlertModal() {
         <DialogBody
           type={type}
           body={body}
-          productId={productId}
+          handleClick={alert_action}
           handleClose={() => {
-            dispatch(alertModalOpen(false))
+            dispatch(alertModalOpen({ open: false }))
           }}
         />
       </BootstrapDialog>

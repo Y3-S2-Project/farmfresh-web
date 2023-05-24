@@ -7,7 +7,8 @@ import {
   VisionIcon,
   EditIcon,
 } from '../../../assets/icons'
-import { alertModalOpen } from '../../../redux/features/productSlice'
+import { editProductModalOpen } from '../../../redux/features/productSlice'
+import { alertModalOpen } from '../../../redux/features/alertSlice'
 import { useDispatch } from 'react-redux'
 
 const FFProductTableData = ({ row }) => {
@@ -112,6 +113,7 @@ const FFProductTableData = ({ row }) => {
           <div className="flex justify-center items-center gap-4">
             <BinIcon
               handleClick={() => {
+                console.log('mee the devil')
                 dispatch(
                   alertModalOpen({
                     open: true,
@@ -124,7 +126,13 @@ const FFProductTableData = ({ row }) => {
               style={{ cursor: 'pointer' }}
               strokeColor="#f00"
             />
-            <EditIcon style={{ cursor: 'pointer' }} />
+            <EditIcon
+              handleClick={() => {
+                console.log('Clicked')
+                dispatch(editProductModalOpen({ product: row, open: true }))
+              }}
+              style={{ cursor: 'pointer' }}
+            />
             <VisionIcon style={{ cursor: 'pointer' }} />
           </div>
         )}

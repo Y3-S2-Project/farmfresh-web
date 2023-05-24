@@ -30,11 +30,7 @@ const initialState = {
     product_weight: 0.0,
     product_sale_status: false,
   },
-  add_product_modal: false,
-  alert_modal: false,
-  alert_modal_type: '',
-  alert_modal_title: '',
-  alert_modal_body: '',
+
   edit_product_modal: {
     modal: false,
     product_id: '',
@@ -88,7 +84,8 @@ export const postProduct = createAsyncThunk(
 )
 export const updateProduct = createAsyncThunk(
   'products/editProduct',
-  async (updatedProduct) => await editProduct(updatedProduct),
+  async (updatedProduct, product_id) =>
+    await editProduct(updatedProduct, product_id),
 )
 
 export const removeProduct = createAsyncThunk(
@@ -119,20 +116,16 @@ const productsSlice = createSlice({
     },
     editProductModalOpen: (state, action) => {
       state.edit_product_modal = { ...action.payload?.product }
-      state.edit_product_modal.modal = action.payload.open
+      state.edit_product_modal = {
+        ...state.edit_product_modal,
+        modal: action.payload.open,
+      }
     },
     viewProductModalOpen: (state, action) => {
       state.view_product_modal = { ...action.payload?.product }
       state.view_product_modal.modal = action.payload.open
     },
-    alertModalOpen: (state, action) => {
-      console.log(action.payload)
-      state.alert_modal = action.payload.open
-      state.alert_modal_type = action.payload?.type || ''
-      state.alert_modal_title = action.payload?.title || ''
-      state.alert_modal_body = action.payload?.body || ''
-      state.product.product_id = action.payload?.product_id || null
-    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -240,14 +233,11 @@ export const {
 
 export const selectAllProducts = (state) => state.products.products
 export const selectProduct = (state) => state.products.product
-export const editProductModal = (state) => state.products.edit_product_modal
-export const viewProductModal = (state) => state.products.view_product_modal
+export const edit_product_modal = (state) => state.products.edit_product_modal
+export const view_product_modal = (state) => state.products.view_product_modal
 export const add_product_modal = (state) => state.products.add_product_modal
 
-export const alert_modal = (state) => state.products.alert_modal
-export const alert_modal_type = (state) => state.products.alert_modal_type
-export const alert_modal_title = (state) => state.products.alert_modal_title
-export const alert_modal_body = (state) => state.products.alert_modal_body
+
 
 export const product_id = (state) => state.products.product?.product_id
 
