@@ -148,7 +148,7 @@ const Index = () => {
             )}
             {!productList.length && <h4>No Products</h4>}
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ marginRight: '1%' }}>
               {productList?.map((product) => (
                 <Grid
                   item

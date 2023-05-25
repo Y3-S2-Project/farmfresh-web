@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { DUMMY_CATEGORIES } from '../../utils/constants'
 import { imageUpload, removeImage } from '../../utils/imagesFunctions'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -11,7 +10,12 @@ import {
   addProductModal,
   message,
 } from '../../redux/features/productSlice'
-import { validateProductName } from '../../utils/validations/product'
+
+import { selectAllCategories } from '../../redux/features/categorySlice'
+import {
+  validateNumericInput,
+  validateProductName,
+} from '../../utils/validations/product'
 const AddProductDetail = () => {
   const dispatch = useDispatch()
   const add_product_detail_modal = useSelector(add_product_modal)
@@ -21,7 +25,7 @@ const AddProductDetail = () => {
   //error
   const [productNameError, setProductNameError] = useState('')
 
-  const [categories, setCtegories] = useState(DUMMY_CATEGORIES)
+  const categories = useSelector(selectAllCategories)
   const alert = (msg, type) => (
     <div
       className={`text-${type} flex felx-row  justify-center items-center py-2 px-4 w-full`}
@@ -274,6 +278,7 @@ const AddProductDetail = () => {
                       product_price: e.target.value,
                     })
                   }
+                  onKeyDown={(e) => validateNumericInput(e)}
                   className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   id="price"
                 />
@@ -351,6 +356,7 @@ const AddProductDetail = () => {
                       product_weight: e.target.value,
                     })
                   }
+                  onKeyDown={(e) => validateNumericInput(e)}
                   type="number"
                   className="px-4 py-2 border h-14 rounded-lg focus:outline-none "
                   id="weight"
@@ -430,6 +436,7 @@ const AddProductDetail = () => {
                       product_quantity: e.target.value,
                     })
                   }
+                  onKeyDown={(e) => validateNumericInput(e)}
                   type="number"
                   className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   id="quantity"
@@ -440,6 +447,7 @@ const AddProductDetail = () => {
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
                   value={fData.product_offer}
+                  onKeyDown={(e) => validateNumericInput(e)}
                   type="number"
                   onChange={(e) =>
                     setFdata({

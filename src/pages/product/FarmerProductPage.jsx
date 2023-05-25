@@ -23,6 +23,7 @@ import AddProductModal from '../../components/organisms/AddProductModal'
 import EditProductModal from '../../components/organisms/EditProductModal'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
 import { ViewProductModal } from '../../components/organisms/ViewProductModal'
+import { getAllCategories } from '../../redux/features/categorySlice'
 const FarmerProductPage = () => {
   const dispatch = useDispatch()
 
@@ -36,6 +37,7 @@ const FarmerProductPage = () => {
     if (responseMessage !== 'All products') {
       setTimeout(() => {
         dispatch(getAllProducts())
+        dispatch(getAllCategories())
       }, 2000)
     }
     localStorage.setItem('userRole', 'farmer')

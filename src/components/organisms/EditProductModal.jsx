@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { DUMMY_CATEGORIES } from '../../utils/constants'
 import {
   edit_product_modal,
   getAllProducts,
@@ -10,10 +9,13 @@ import {
   updateProduct,
   message,
 } from '../../redux/features/productSlice'
-
+import { selectAllCategories } from '../../redux/features/categorySlice'
 import { imageUpload, removeImage } from '../../utils/imagesFunctions'
-import { validateProductName } from '../../utils/validations/product'
-const EditProductModal = (props) => {
+import {
+  validateProductName,
+  validateNumericInput,
+} from '../../utils/validations/product'
+const EditProductModal = () => {
   const dispatch = useDispatch()
   const edit_product_detail_modal = useSelector(edit_product_modal)
   const succesStatus = useSelector(isSuccess)
@@ -23,7 +25,8 @@ const EditProductModal = (props) => {
   const [selectedFile, setSelectedFile] = useState(null)
   const [error, setError] = useState('')
   const fileInputRef = useRef(null)
-  const [categories, setCtegories] = useState(DUMMY_CATEGORIES)
+
+  const categories = useSelector(selectAllCategories)
   const [imageAdded, setImageAdded] = useState(false)
   //error
   const [productNameError, setProductNameError] = useState('')
@@ -265,6 +268,7 @@ const EditProductModal = (props) => {
                       product_price: e.target.value,
                     })
                   }
+                  onKeyDown={(e) => validateNumericInput(e)}
                   type="number"
                   className="px-4 py-2 border  h-14 focus:outline-none"
                   id="price"
@@ -343,6 +347,7 @@ const EditProductModal = (props) => {
                       product_weight: e.target.value,
                     })
                   }
+                  onKeyDown={(e) => validateNumericInput(e)}
                   className="px-4 py-2   h-14 border focus:outline-none"
                   id="weight"
                 />
@@ -426,6 +431,7 @@ const EditProductModal = (props) => {
                       product_quantity: e.target.value,
                     })
                   }
+                  onKeyDown={(e) => validateNumericInput(e)}
                   type="number"
                   className="px-4 py-2 border  h-14 focus:outline-none"
                   id="quantity"
@@ -445,6 +451,7 @@ const EditProductModal = (props) => {
                     })
                   }
                   type="number"
+                  onKeyDown={(e) => validateNumericInput(e)}
                   className="px-4 py-2 border h-14 focus:outline-none"
                   id="offer"
                 />

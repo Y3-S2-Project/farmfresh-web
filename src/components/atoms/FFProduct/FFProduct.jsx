@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { isLoading, isError } from '../../../redux/features/productSlice'
 import FFRating from '../FFRating/FFRating'
 import { LoadingIcon } from '../../../assets/icons/LoadingIcon'
 import FFImageSlider from '../FFImageSlider/FFImageSlider'
-const FFProduct = ({ match, history, product }) => {
+import './product.css'
+import BasketIcon from '../../../assets/icons/BasketIcon'
+import { PlusIcon } from '../../../assets/icons/PlusIcon'
+
+const FFProductView = ({ match, history, product }) => {
   const [qty, setQty] = useState(1)
   const loading = useSelector(isLoading)
   const error = useSelector(isError)
@@ -13,7 +16,7 @@ const FFProduct = ({ match, history, product }) => {
 
   useEffect(() => {
     // dispatch(productAction.product(match.params.productId));
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, match])
 
   const addToCartHandler = () => {
@@ -29,69 +32,69 @@ const FFProduct = ({ match, history, product }) => {
       ) : error ? (
         <p>Error message</p>
       ) : (
-        <>
-          <div className="flex flex-col m-10 space-y-3 p-3 border border-gray-300 rounded-lg">
-            <div className="flex justify-center items-center ml-10">
-              <div>
-                <FFImageSlider images={product.product_images} />
-              </div>
+        <div className="product-view-product rounded-xl border border-grey-200">
+          <div className="product-view-product-content">
+            <div className="product-view-product-img">
+              <img src={product.product_images[0]} alt="product image" />
             </div>
-            <div>
-              <h2 className="text-xl mt-4">{product.product_name}</h2>
-            </div>
-            <div className="col-span-1">
-              <div className="flex flex-row w-full justify-center items-center">
-                <div className="flex justify-center items-center">
-                  <FFRating
-                    value={3.2}
-                    ratingStyles={{ marginInline: '0px' }}
-                    text={`${
-                      product.product_reviews
-                        ? product.product_reviews.length
-                        : 0
-                    } reviews`}
-                  />
-                  <p className="ml-2">Price: LKR{product.product_price}</p>
-                </div>
-              </div>
-              <div className="flex flex-row w-full justify-center items-center">
-                <div className="w-4/6">
-                  <p className="mb-2">
-                    Status:{' '}
-                    {product.product_quantity > 0 ? 'In Stock' : 'Out Of Stock'}
-                  </p>
-                </div>
-                {product.product_quantity > 0 && (
-                  <div className="w-2/6">
-                    <select
-                      className="w-full p-2 border border-gray-300 rounded"
-                      value={qty}
-                      onChange={(e) => setQty(e.target.value)}
-                    >
-                      {[...Array(product.product_quantity).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-              </div>
-              <button
-                className="bg-blue-500 rounded-xl text-white px-4 py-2 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={addToCartHandler}
-                disabled={!product.product_quantity}
-              >
-                Add To Cart
+            <div className="product-view-product-btns">
+              <button type="button" className="product-view-btn-cart">
+                + add to cart
+                <span className="">
+                  <PlusIcon />
+                </span>
+              </button>
+              <button type="button" className="product-view-btn-buy">
+                buy now
+                <span>
+                  <BasketIcon />
+                </span>
               </button>
             </div>
           </div>
 
-          {/* <ProductReview productId={match.params.productId} /> */}
-        </>
+          <div className="product-view-product-info">
+            <div className="product-view-product-info-top">
+              <h2 className="product-view-sm-title">{product.product_name}</h2>
+              <div className="product-view-rating">
+                <span>
+                  <i className="fas fa-star"></i>
+                </span>
+                <span>
+                  <i className="fas fa-star"></i>
+                </span>
+                <span>
+                  <i className="fas fa-star"></i>
+                </span>
+                <span>
+                  <i className="fas fa-star"></i>
+                </span>
+                <span>
+                  <i className="far fa-star"></i>
+                </span>
+              </div>
+            </div>
+            <a href="#" className="product-view-product-name">
+              mens shoes DN 23XX, new product
+            </a>
+            <p className="product-view-product-price">
+              LKR {product.product_price}
+            </p>
+            <p className="product-view-product-price">
+              LKR{' '}
+              {product.product_price -
+                (product.product_price * product.product_offer) / 100}
+            </p>
+          </div>
+          <div className="product-view-off-info">
+            <h2 className="product-view-sm-title">
+              {product.product_offer}% off
+            </h2>
+          </div>
+        </div>
       )}
     </div>
   )
 }
 
-export default FFProduct
+export default FFProductView
