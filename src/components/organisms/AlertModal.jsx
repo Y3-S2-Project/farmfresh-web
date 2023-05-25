@@ -16,11 +16,15 @@ import {
   alert_modal_type,
   alert_modal_title,
   alert_modal_body,
-  alert_modal_action,
+  category_id,
+  product_id,
 } from '../../redux/features/alertSlice'
 
-import { updateProductVisiblity } from '../../redux/features/productSlice'
-
+import {
+  updateProductVisiblity,
+  removeProduct,
+} from '../../redux/features/productSlice'
+import { removeCategory } from '../../redux/features/categorySlice'
 import WarningIcon from '@mui/icons-material/Warning'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -69,6 +73,12 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 const DialogBody = ({ type, handleClose, body, handleClick }) => {
+  const categoryId = useSelector(category_id)
+  const productId = useSelector(product_id)
+  React.useEffect(() => {
+    console.log(categoryId, productId)
+  })
+  const dispatch = useDispatch()
   return (
     <div>
       <DialogContent dividers>
@@ -77,10 +87,27 @@ const DialogBody = ({ type, handleClose, body, handleClick }) => {
         </Typography>
       </DialogContent>
       <div className="flex flex-col">
-        {type === 'product-delete' || type === 'category-delete' ? (
+        {type === 'product-delete' ? (
           <Button
             variant="contained"
-            onClick={handleClick}
+            onClick={() => dispatch(removeProduct(productId))}
+            style={{
+              backgroundColor: '#FEE2E2',
+              color: '#7F1D1D',
+              margin: '10px',
+
+              borderRadius: '50px',
+              height: '64px',
+              width: '519px',
+            }}
+          >
+            Delete
+            <DeleteIcon style={{ marginLeft: '4px', color: '#7F1D1D' }} />
+          </Button>
+        ) : type === 'category-delete' ? (
+          <Button
+            variant="contained"
+            onClick={() => dispatch(removeCategory(categoryId))}
             style={{
               backgroundColor: '#FEE2E2',
               color: '#7F1D1D',
@@ -97,7 +124,14 @@ const DialogBody = ({ type, handleClose, body, handleClick }) => {
         ) : type === 'product-reject' ? (
           <Button
             variant="contained"
-            onClick={handleClick}
+            onClick={() =>
+              dispatch(
+                updateProductVisiblity({
+                  product_id: productId,
+                  visibility: false,
+                }),
+              )
+            }
             style={{
               backgroundColor: '#FEE2E2',
               color: '#7F1D1D',
@@ -114,7 +148,14 @@ const DialogBody = ({ type, handleClose, body, handleClick }) => {
         ) : type === 'product-accept' ? (
           <Button
             variant="contained"
-            onClick={handleClick}
+            onClick={() =>
+              dispatch(
+                updateProductVisiblity({
+                  product_id: productId,
+                  visibility: true,
+                }),
+              )
+            }
             style={{
               backgroundColor: 'rgba(100, 191, 71, 0.2)',
               color: '#1F4647',
@@ -170,7 +211,6 @@ export default function AlertModal() {
   const title = useSelector(alert_modal_title)
   const body = useSelector(alert_modal_body)
   const type = useSelector(alert_modal_type)
-  const alert_action = useSelector(alert_modal_action)
 
   return (
     <div
@@ -209,7 +249,6 @@ export default function AlertModal() {
         <DialogBody
           type={type}
           body={body}
-          handleClick={alert_action}
           handleClose={() => {
             dispatch(alertModalOpen({ open: false }))
           }}

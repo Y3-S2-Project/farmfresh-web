@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { DUMMY_CATEGORIES } from '../../utils/constants'
+
 import { imageUpload, removeImage } from '../../utils/imagesFunctions'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -9,6 +9,7 @@ import {
   isSuccess,
   isError,
   addCategoryModal,
+  message,
 } from '../../redux/features/categorySlice'
 
 const AddCategoryModal = () => {
@@ -16,9 +17,14 @@ const AddCategoryModal = () => {
   const add_category_detail_modal = useSelector(add_category_modal)
   const succesStatus = useSelector(isSuccess)
   const errorStatus = useSelector(isError)
+  const responseMessage = useSelector(message)
 
   const alert = (msg, type) => (
-    <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
+    <div
+      className={`text-${type} flex felx-row  justify-center items-center py-2 px-4 w-full`}
+    >
+      {msg}
+    </div>
   )
 
   //added newly
@@ -31,7 +37,7 @@ const AddCategoryModal = () => {
   const [fData, setFdata] = useState({
     category_id: '',
     category_name: '',
-    category_status: '',
+    category_status: 'Available',
     category_description: '',
     category_image: '',
     success: false,
@@ -57,7 +63,8 @@ const AddCategoryModal = () => {
     }
 
     try {
-      dispatch(postCategory(fData))
+      const { success, error, ...data } = fData
+      dispatch(postCategory(data))
 
       if (succesStatus) {
         dispatch(getAllCategories())
@@ -114,7 +121,7 @@ const AddCategoryModal = () => {
     if (!selectedFile) {
       return
     }
-    imageUpload(selectedFile, 'itemsImages')
+    imageUpload(selectedFile, 'categoryImages')
       .then((imageUrl) => {
         // push the imageUrl to the imageUrl array
         setFdata((prevState) => ({
@@ -198,9 +205,21 @@ const AddCategoryModal = () => {
               </svg>
             </span>
           </div>
-          {fData.error ? <div className="text-red-500">{fData.error}</div> : ''}
-          {fData.success ? (
-            <div className="text-green-500">{fData.success}</div>
+          {errorStatus ? (
+            <div className="text-red-500">
+              {responseMessage !== 'Categories fetched successfully'
+                ? responseMessage
+                : ''}
+            </div>
+          ) : (
+            ''
+          )}
+          {succesStatus ? (
+            <div className="text-green-500">
+              {responseMessage !== 'Categories fetched successfully'
+                ? responseMessage
+                : ''}
+            </div>
           ) : (
             ''
           )}
@@ -262,21 +281,22 @@ const AddCategoryModal = () => {
                 {imageAdded && (
                   <div className="mt-3">
                     {fData.category_image && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-200 text-gray-800 mr-2 mb-2">
-                        {fData.category_image
-                          .split('?alt=media&token=')[0]
-                          .split('%2F')
-                          .pop()}
+                      <div className="relative">
+                        <img
+                          src={fData.category_image}
+                          alt="Category_Image"
+                          className="w-20 h-20 object-cover rounded-full mr-2 mb-2"
+                        />
                         <button
                           type="button"
-                          className="ml-1.5 text-gray-500 hover:text-gray-700 transition-all duration-150"
+                          className="absolute top-0 right-0 p-1 text-gray-500 hover:text-gray-700 transition-all duration-150"
                           onClick={(e) =>
                             handleImageRemove(fData.category_image, e)
                           }
                         >
                           &times;
                         </button>
-                      </span>
+                      </div>
                     )}
                   </div>
                 )}
@@ -286,18 +306,15 @@ const AddCategoryModal = () => {
                   onClick={handleButtonClick}
                   className="flex flex-col mt-4"
                 >
-                  <div className="mt-3">
+                  <div className="mt-3 flex flex-row space-x-1">
                     {selectedFile ? (
-                      {
-                        /* <Badge
-                        pill
-                        variant="secondary"
-                        className="mr-2 mb-2"
-                        style={{ padding: '0.5rem' }}
-                      >
-                        {URL.createObjectURL(selectedFile)}
-                      </Badge> */
-                      }
+                      <div className="relative">
+                        <img
+                          src={selectedFile.name}
+                          alt="Category_Image"
+                          className="w-20 h-20 object-cover rounded-full mr-2 mb-2"
+                        />
+                      </div>
                     ) : (
                       <p></p>
                     )}

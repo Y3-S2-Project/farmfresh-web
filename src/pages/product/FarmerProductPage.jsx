@@ -22,6 +22,7 @@ import { PRODUCT_TABLE_HEADER_CONTENT } from '../../utils/constants'
 import AddProductModal from '../../components/organisms/AddProductModal'
 import EditProductModal from '../../components/organisms/EditProductModal'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
+import { ViewProductModal } from '../../components/organisms/ViewProductModal'
 const FarmerProductPage = () => {
   const dispatch = useDispatch()
 
@@ -33,7 +34,9 @@ const FarmerProductPage = () => {
 
   useEffect(() => {
     if (responseMessage !== 'All products') {
-      dispatch(getAllProducts())
+      setTimeout(() => {
+        dispatch(getAllProducts())
+      }, 2000)
     }
     localStorage.setItem('userRole', 'farmer')
   }, [dispatch, responseMessage])
@@ -87,6 +90,7 @@ const FarmerProductPage = () => {
       </div>
       <AlertModal />
       <EditProductModal />
+      <ViewProductModal />
       <AddProductModal /> {content}
     </div>
   )

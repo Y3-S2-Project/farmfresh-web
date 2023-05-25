@@ -8,24 +8,32 @@ import {
   isError,
   editProductModalOpen,
   updateProduct,
+  message,
 } from '../../redux/features/productSlice'
 
 import { imageUpload, removeImage } from '../../utils/imagesFunctions'
-
+import { validateProductName } from '../../utils/validations/product'
 const EditProductModal = (props) => {
   const dispatch = useDispatch()
   const edit_product_detail_modal = useSelector(edit_product_modal)
   const succesStatus = useSelector(isSuccess)
   const errorStatus = useSelector(isError)
+  const responseMessage = useSelector(message)
 
   const [selectedFile, setSelectedFile] = useState(null)
   const [error, setError] = useState('')
   const fileInputRef = useRef(null)
   const [categories, setCtegories] = useState(DUMMY_CATEGORIES)
   const [imageAdded, setImageAdded] = useState(false)
+  //error
+  const [productNameError, setProductNameError] = useState('')
 
   const alert = (msg, type) => (
-    <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
+    <div
+      className={`text-${type} flex felx-row  justify-center items-center py-2 px-4 w-full`}
+    >
+      {msg}
+    </div>
   )
 
   const [editformData, setEditformdata] = useState({
@@ -70,8 +78,13 @@ const EditProductModal = (props) => {
       console.log('Image uploading')
     }
     try {
+      const { error, success, ...updatedData } = editformData
+      console.log(editformData)
       dispatch(
-        updateProduct(editformData, edit_product_detail_modal.product_id),
+        updateProduct({
+          ...updatedData,
+          product_id: edit_product_detail_modal.product_id,
+        }),
       )
       if (succesStatus) {
         dispatch(getAllProducts())
@@ -119,7 +132,7 @@ const EditProductModal = (props) => {
     if (!selectedFile) {
       return
     }
-    imageUpload(selectedFile, 'itemsImages')
+    imageUpload(selectedFile, 'productImages')
       .then((imageUrl) => {
         // push the imageUrl to the imageUrl array
         setEditformdata((prevState) => ({
@@ -203,8 +216,19 @@ const EditProductModal = (props) => {
               </svg>
             </span>
           </div>
-          {editformData.error ? alert(editformData.error, 'red') : ''}
-          {editformData.success ? alert(editformData.success, 'green') : ''}
+          {editformData.error
+            ? alert(
+                responseMessage !== 'All products' ? responseMessage : '',
+                'red',
+              )
+            : ''}
+          {editformData.success
+            ? alert(
+                responseMessage !== 'All products' ? responseMessage : '',
+                'green',
+              )
+            : ''}
+          {productNameError ? alert(productNameError, 'red') : ''}
           <form className="w-full" onSubmit={(e) => submitForm(e)}>
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1 space-x-1">
@@ -212,14 +236,18 @@ const EditProductModal = (props) => {
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
                   value={editformData.product_name}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    validateProductName({
+                      productName: e.target.value,
+                      setProductNameError,
+                    })
                     setEditformdata({
                       ...editformData,
                       error: false,
                       success: false,
                       product_name: e.target.value,
                     })
-                  }
+                  }}
                   className="px-4 py-2 border  h-14 focus:outline-none"
                   type="text"
                 />
@@ -252,25 +280,23 @@ const EditProductModal = (props) => {
                   * Must need 1 image
                 </span>
                 {imageAdded && (
-                  <div className="mt-3">
+                  <div className="mt-3 flex flex-row space-x-1">
                     {editformData?.product_images &&
                       editformData?.product_images.map((image, index) => (
-                        <span
-                          key={image}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-200 text-gray-800 mr-2 mb-2"
-                        >
-                          {image
-                            .split('?alt=media&token=')[0]
-                            .split('%2F')
-                            .pop()}
+                        <div className="relative " key={index}>
+                          <img
+                            src={image}
+                            alt="product_Image"
+                            className="w-20 h-20 object-cover rounded-full mr-2 mb-2"
+                          />
                           <button
                             type="button"
-                            className="ml-1.5 text-gray-500 hover:text-gray-700 transition-all duration-150"
+                            className="absolute top-0 right-0 p-1 text-gray-500 hover:text-gray-700 transition-all duration-150"
                             onClick={(e) => handleImageRemove(image, e)}
                           >
                             &times;
                           </button>
-                        </span>
+                        </div>
                       ))}
                   </div>
                 )}
@@ -279,18 +305,15 @@ const EditProductModal = (props) => {
                   onClick={handleButtonClick}
                   className="flex flex-col mt-4"
                 >
-                  <div className="mt-3">
+                  <div className="mt-3 flex flex-row space-x-1">
                     {selectedFile ? (
-                      {
-                        /* <Badge
-                        pill
-                        variant="secondary"
-                        className="mr-2 mb-2"
-                        style={{ padding: '0.5rem' }}
-                      >
-                        {URL.createObjectURL(selectedFile)}
-                      </Badge> */
-                      }
+                      <div className="relative">
+                        <img
+                          src={selectedFile.name}
+                          alt="product_Image"
+                          className="w-20 h-20 object-cover rounded-full mr-2 mb-2"
+                        />
+                      </div>
                     ) : (
                       <p></p>
                     )}
@@ -311,6 +334,7 @@ const EditProductModal = (props) => {
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
                   value={editformData.product_weight}
+                  type="number"
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
@@ -344,10 +368,10 @@ const EditProductModal = (props) => {
                   className="px-4 py-2  h-14 border focus:outline-none"
                   id="status"
                 >
-                  <option name="status" value="Available">
-                    Available
+                  <option name="status" value="in stock">
+                    In Stock
                   </option>
-                  <option name="status" value="Out of Stock">
+                  <option name="status" value="out of stock">
                     Out Of Stock
                   </option>
                 </select>

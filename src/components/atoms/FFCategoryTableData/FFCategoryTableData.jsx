@@ -1,7 +1,11 @@
 import React from 'react'
-import { Pill } from '../Pill'
+import { FFPill } from '../FFPill/FFPill'
 import { BinIcon, VisionIcon, EditIcon } from '../../../assets/icons'
-import { editCategoryModalOpen } from '../../../redux/features/categorySlice'
+import {
+  editCategoryModalOpen,
+  removeCategory,
+  viewCategoryModalOpen,
+} from '../../../redux/features/categorySlice'
 import { alertModalOpen } from '../../../redux/features/alertSlice'
 import { useDispatch } from 'react-redux'
 
@@ -33,18 +37,11 @@ const FFCategoryTableData = ({ row }) => {
               alt={row.category_name}
             />
           </div>
-          {/* <div className="relative h-10 w-10">
-            <img
-              className="h-full w-full object-cover object-center"
-              src={row.category_images[1]}
-              alt={row.category_name}
-            />
-          </div> */}
         </div>
       </td>
       <td className="px-6 py-4">
         <div className="flex text-gray-900 items-center justify-center">
-          <Pill type={row.category_status} />
+          <FFPill type={row.category_status} />
         </div>
       </td>
       <td className="px-6 py-4">
@@ -72,6 +69,7 @@ const FFCategoryTableData = ({ row }) => {
                     type: 'category-delete',
                     title: 'Confirm category Removal',
                     body: 'Are you sure you want to delete this category? This action cannot be undone?',
+                    category_id: row._id,
                   }),
                 )
               }}
@@ -85,7 +83,13 @@ const FFCategoryTableData = ({ row }) => {
               }}
               style={{ cursor: 'pointer' }}
             />
-            <VisionIcon style={{ cursor: 'pointer' }} />
+            <VisionIcon
+              handleClick={() => {
+                console.log('Clicked')
+                dispatch(viewCategoryModalOpen({ category: row, open: true }))
+              }}
+              style={{ cursor: 'pointer' }}
+            />
           </div>
         }
       </td>

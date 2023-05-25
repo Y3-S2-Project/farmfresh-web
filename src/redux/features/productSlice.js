@@ -84,8 +84,7 @@ export const postProduct = createAsyncThunk(
 )
 export const updateProduct = createAsyncThunk(
   'products/editProduct',
-  async (updatedProduct, product_id) =>
-    await editProduct(updatedProduct, product_id),
+  async (updatedProduct) => await editProduct(updatedProduct),
 )
 
 export const removeProduct = createAsyncThunk(
@@ -94,7 +93,7 @@ export const removeProduct = createAsyncThunk(
 )
 export const updateProductVisiblity = createAsyncThunk(
   'products/chageVisiblity ',
-  async (product_id) => await chageVisiblity(product_id),
+  async (updatedValues) => await chageVisiblity(updatedValues),
 )
 
 const handleAsyncAction = (state, action) => {
@@ -123,9 +122,11 @@ const productsSlice = createSlice({
     },
     viewProductModalOpen: (state, action) => {
       state.view_product_modal = { ...action.payload?.product }
-      state.view_product_modal.modal = action.payload.open
+      state.view_product_modal = {
+        ...state.view_product_modal,
+        modal: action.payload.open,
+      }
     },
-
   },
   extraReducers: (builder) => {
     builder
@@ -236,8 +237,6 @@ export const selectProduct = (state) => state.products.product
 export const edit_product_modal = (state) => state.products.edit_product_modal
 export const view_product_modal = (state) => state.products.view_product_modal
 export const add_product_modal = (state) => state.products.add_product_modal
-
-
 
 export const product_id = (state) => state.products.product?.product_id
 

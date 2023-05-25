@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-
 import { useSelector, useDispatch } from 'react-redux'
 import {
   message,
@@ -21,10 +20,10 @@ import AlertModal from '../../components/organisms/AlertModal'
 import FFCategoryTableData from '../../components/atoms/FFCategoryTableData/FFCategoryTableData'
 import { CATEGORY_TABLE_HEADER_CONTENT } from '../../utils/constants'
 import AddCategoryModal from '../../components/organisms/AddCategoryModal'
-
+import EditCategoryModal from '../../components/organisms/EditCategoryModal'
+import { ViewCategoryModal } from '../../components/organisms/ViewCategoryModal'
 const AdminCategoryPage = () => {
   const dispatch = useDispatch()
-
   const categoryList = useSelector(selectAllCategories)
   const responseMessage = useSelector(message)
   const loadingStatus = useSelector(isLoading)
@@ -33,7 +32,9 @@ const AdminCategoryPage = () => {
 
   useEffect(() => {
     if (responseMessage !== 'Categories fetched successfully') {
-      dispatch(getAllCategories())
+      setTimeout(() => {
+        dispatch(getAllCategories())
+      }, 2000)
     }
     localStorage.setItem('userRole', 'admin')
   }, [dispatch, responseMessage])
@@ -84,6 +85,8 @@ const AdminCategoryPage = () => {
       />
       <AddCategoryModal />
       <AlertModal />
+      <EditCategoryModal />
+      <ViewCategoryModal />
       {content}
     </div>
   )

@@ -1,6 +1,8 @@
 import React from 'react'
+import { AvailableIcon } from '../../../assets/icons/AvailableIcon'
+import { UnavailableIcon } from '../../../assets/icons/UnavailableIcon'
 
-export const Pill = ({ type }) => {
+export const FFPill = ({ type }) => {
   switch (type) {
     case 'in stock':
       return (
@@ -128,6 +130,10 @@ export const Pill = ({ type }) => {
           </svg>
         </div>
       )
+    case 'Available':
+      return <AvailableIcon />
+    case 'Unavailable':
+      return <UnavailableIcon />
     default:
       return <div className="overflow-hidden">{type}</div>
   }

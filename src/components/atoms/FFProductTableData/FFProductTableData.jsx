@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pill } from '../Pill'
+import { FFPill } from '../FFPill/FFPill'
 import {
   BinIcon,
   CrossIcon,
@@ -7,7 +7,10 @@ import {
   VisionIcon,
   EditIcon,
 } from '../../../assets/icons'
-import { editProductModalOpen } from '../../../redux/features/productSlice'
+import {
+  editProductModalOpen,
+  viewProductModalOpen,
+} from '../../../redux/features/productSlice'
 import { alertModalOpen } from '../../../redux/features/alertSlice'
 import { useDispatch } from 'react-redux'
 
@@ -32,7 +35,7 @@ const FFProductTableData = ({ row }) => {
       </td>
       <td className="px-6 py-4">
         <div className="flex text-gray-900 items-center justify-center">
-          <Pill type={row.product_status} />
+          <FFPill type={row.product_status} />
         </div>
       </td>
       <td className="px-6 py-4">
@@ -64,9 +67,9 @@ const FFProductTableData = ({ row }) => {
         <div className="flex text-gray-900 text-center text-sm">
           <span className="w-full font-medium text-gray-700">
             {row.product_visible ? (
-              <Pill type="accepted" />
+              <FFPill type="accepted" />
             ) : (
-              <Pill type="rejected" />
+              <FFPill type="rejected" />
             )}
           </span>
         </div>
@@ -81,7 +84,12 @@ const FFProductTableData = ({ row }) => {
       <td className="px-6 py-4">
         {localStorage.getItem('userRole') === 'admin' ? (
           <div className="flex justify-center items-center gap-4">
-            <VisionIcon style={{ cursor: 'pointer' }} />
+            <VisionIcon
+              handleClick={() => {
+                dispatch(viewProductModalOpen({ product: row, open: true }))
+              }}
+              style={{ cursor: 'pointer' }}
+            />
             <CrossIcon
               handleClick={() => {
                 dispatch(
@@ -90,6 +98,7 @@ const FFProductTableData = ({ row }) => {
                     type: 'product-reject',
                     title: 'Reject  Product',
                     body: 'Due to innapporiate image usage , this product cannot be added, please be kind to  change the images and request for approval',
+                    product_id: row.product_id,
                   }),
                 )
               }}
@@ -103,6 +112,7 @@ const FFProductTableData = ({ row }) => {
                     type: 'product-accept',
                     title: 'Accept  Product',
                     body: 'Your Product has been added to the system. it will be visible to users.',
+                    product_id: row.product_id,
                   }),
                 )
               }}
@@ -120,6 +130,7 @@ const FFProductTableData = ({ row }) => {
                     type: 'product-delete',
                     title: 'Confirm Product Removal',
                     body: 'Are you sure you want to delete this product? This action cannot be undone?',
+                    product_id: row.product_id,
                   }),
                 )
               }}
@@ -133,7 +144,13 @@ const FFProductTableData = ({ row }) => {
               }}
               style={{ cursor: 'pointer' }}
             />
-            <VisionIcon style={{ cursor: 'pointer' }} />
+            <VisionIcon
+              handleClick={() => {
+                console.log('Clicked')
+                dispatch(viewProductModalOpen({ product: row, open: true }))
+              }}
+              style={{ cursor: 'pointer' }}
+            />
           </div>
         )}
       </td>

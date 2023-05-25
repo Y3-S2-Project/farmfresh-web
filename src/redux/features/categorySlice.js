@@ -57,8 +57,7 @@ export const postCategory = createAsyncThunk(
 )
 export const updateCategory = createAsyncThunk(
   'categories/editCategory',
-  async (updatedCategory, category_id) =>
-    await editCategory(updatedCategory, category_id),
+  async (updatedCategory) => await editCategory(updatedCategory),
 )
 
 export const removeCategory = createAsyncThunk(
@@ -67,7 +66,7 @@ export const removeCategory = createAsyncThunk(
 )
 
 const handleAsyncAction = (state, action) => {
-  if (action.payload) {
+  if (action?.payload) {
     state.loading = false
     state.success = action.payload?.data?.success
     state.message = action.payload?.data?.message
@@ -92,7 +91,11 @@ const categoriesSlice = createSlice({
     },
     viewCategoryModalOpen: (state, action) => {
       state.view_category_modal = { ...action.payload?.category }
-      state.view_category_modal.modal = action.payload.open
+      state.view_category_modal = {
+        ...state.view_category_modal,
+        modal: action.payload.open,
+      }
+      console.log(state.view_category_modal)
     },
   },
   extraReducers: (builder) => {

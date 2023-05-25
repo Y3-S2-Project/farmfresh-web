@@ -9,16 +9,25 @@ import {
   isSuccess,
   isError,
   addProductModal,
+  message,
 } from '../../redux/features/productSlice'
-
+import { validateProductName } from '../../utils/validations/product'
 const AddProductDetail = () => {
   const dispatch = useDispatch()
   const add_product_detail_modal = useSelector(add_product_modal)
   const succesStatus = useSelector(isSuccess)
   const errorStatus = useSelector(isError)
+  const responseMessage = useSelector(message)
+  //error
+  const [productNameError, setProductNameError] = useState('')
+
   const [categories, setCtegories] = useState(DUMMY_CATEGORIES)
   const alert = (msg, type) => (
-    <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
+    <div
+      className={`text-${type} flex felx-row  justify-center items-center py-2 px-4 w-full`}
+    >
+      {msg}
+    </div>
   )
 
   //added newly
@@ -31,7 +40,7 @@ const AddProductDetail = () => {
   const [fData, setFdata] = useState({
     product_name: '',
     product_price: 0.0,
-    product_status: '',
+    product_status: 'in stock',
     product_category: '',
     product_offer: 0.0,
     product_images: [],
@@ -59,7 +68,8 @@ const AddProductDetail = () => {
     }
 
     try {
-      dispatch(postProduct(fData))
+      const { success, error, ...data } = fData
+      dispatch(postProduct(data))
 
       if (succesStatus) {
         dispatch(getAllProducts())
@@ -215,12 +225,19 @@ const AddProductDetail = () => {
               </svg>
             </span>
           </div>
-          {fData.error ? <div className="text-red-500">{fData.error}</div> : ''}
-          {fData.success ? (
-            <div className="text-green-500">{fData.success}</div>
-          ) : (
-            ''
-          )}
+          {errorStatus
+            ? alert(
+                responseMessage !== 'All products' ? responseMessage : '',
+                'red',
+              )
+            : ''}
+          {succesStatus
+            ? alert(
+                responseMessage !== 'All products' ? responseMessage : '',
+                'green',
+              )
+            : ''}
+          {productNameError ? alert(productNameError, 'red') : ''}
           <form className="w-full">
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1 space-x-1">
@@ -228,14 +245,18 @@ const AddProductDetail = () => {
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
                   value={fData.product_name}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    validateProductName({
+                      productName: e.target.value,
+                      setProductNameError,
+                    })
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
                       product_name: e.target.value,
                     })
-                  }
+                  }}
                   className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   type="text"
                 />
@@ -262,48 +283,46 @@ const AddProductDetail = () => {
             {/* Most Important part for uploading multiple image */}
 
             <div className="flex space-x-1 py-4">
-              <div className="flex w-1/2 flex-col mt-4">
+              <div className="flex w-1/2  flex-col mt-4">
                 <label htmlFor="image">Image Upload</label>
                 <span className="text-red-600 text-xs">
                   * Must need 1 image
                 </span>
                 {imageAdded && (
-                  <div className="mt-3">
-                    {fData.product_images.map((image, index) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-gray-200 text-gray-800 mr-2 mb-2"
-                      >
-                        {image.split('?alt=media&token=')[0].split('%2F').pop()}
-                        <button
-                          type="button"
-                          className="ml-1.5 text-gray-500 hover:text-gray-700 transition-all duration-150"
-                          onClick={(e) => handleImageRemove(image, e)}
-                        >
-                          &times;
-                        </button>
-                      </span>
-                    ))}
+                  <div className="mt-3 flex flex-row space-x-1">
+                    {fData?.product_images &&
+                      fData?.product_images.map((image, index) => (
+                        <div className="relative " key={index}>
+                          <img
+                            src={image}
+                            alt="product_Image"
+                            className="w-20 h-20 object-cover rounded-full mr-2 mb-2"
+                          />
+                          <button
+                            type="button"
+                            className="absolute top-0 right-0 p-1 text-gray-500 hover:text-gray-700 transition-all duration-150"
+                            onClick={(e) => handleImageRemove(image, e)}
+                          >
+                            &times;
+                          </button>
+                        </div>
+                      ))}
                   </div>
                 )}
-
                 <div
                   style={{ cursor: 'pointer' }}
                   onClick={handleButtonClick}
                   className="flex flex-col mt-4"
                 >
-                  <div className="mt-3">
+                  <div className="mt-3 flex flex-row space-x-1">
                     {selectedFile ? (
-                      {
-                        /* <Badge
-                        pill
-                        variant="secondary"
-                        className="mr-2 mb-2"
-                        style={{ padding: '0.5rem' }}
-                      >
-                        {URL.createObjectURL(selectedFile)}
-                      </Badge> */
-                      }
+                      <div className="relative">
+                        <img
+                          src={selectedFile.name}
+                          alt="product_Image"
+                          className="w-20 h-20 object-cover rounded-full mr-2 mb-2"
+                        />
+                      </div>
                     ) : (
                       <p></p>
                     )}
@@ -332,6 +351,7 @@ const AddProductDetail = () => {
                       product_weight: e.target.value,
                     })
                   }
+                  type="number"
                   className="px-4 py-2 border h-14 rounded-lg focus:outline-none "
                   id="weight"
                 />
@@ -410,6 +430,7 @@ const AddProductDetail = () => {
                       product_quantity: e.target.value,
                     })
                   }
+                  type="number"
                   className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   id="quantity"
                 />
@@ -419,6 +440,7 @@ const AddProductDetail = () => {
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
                   value={fData.product_offer}
+                  type="number"
                   onChange={(e) =>
                     setFdata({
                       ...fData,

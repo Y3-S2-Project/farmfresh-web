@@ -9,13 +9,13 @@ import {
 } from '../../redux/features/productSlice'
 import { getAllProducts } from '../../redux/features/productSlice'
 import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
-
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
 import AlertModal from '../../components/organisms/AlertModal'
 import FFProductTableData from '../../components/atoms/FFProductTableData/FFProductTableData'
 import { PRODUCT_TABLE_HEADER_CONTENT } from '../../utils/constants'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
+import { ViewProductModal } from '../../components/organisms/ViewProductModal'
 const AdminProductPage = () => {
   const dispatch = useDispatch()
 
@@ -27,7 +27,9 @@ const AdminProductPage = () => {
 
   useEffect(() => {
     if (responseMessage !== 'All products') {
-      dispatch(getAllProducts())
+      setTimeout(() => {
+        dispatch(getAllProducts())
+      }, 2000)
     }
     localStorage.setItem('userRole', 'admin')
   }, [dispatch, responseMessage])
@@ -49,6 +51,7 @@ const AdminProductPage = () => {
   return (
     <div>
       <AlertModal />
+      <ViewProductModal />
       {content}
     </div>
   )

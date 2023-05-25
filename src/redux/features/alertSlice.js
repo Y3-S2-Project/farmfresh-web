@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
   category: {
-    _id: '',
+    _id: null,
     category_id: '',
     category_name: '',
     category_status: '',
@@ -26,7 +26,6 @@ const initialState = {
   alert_modal_type: '',
   alert_modal_title: '',
   alert_modal_body: '',
-  alert_modal_action: null,
 }
 
 const alertsSlice = createSlice({
@@ -38,8 +37,8 @@ const alertsSlice = createSlice({
       state.alert_modal_type = action.payload?.type || ''
       state.alert_modal_title = action.payload?.title || ''
       state.alert_modal_body = action.payload?.body || ''
-      state.alert_action = action.payload?.action
-      state.category.category_id = action.payload?.category_id || null
+
+      state.category._id = action.payload?.category_id || null
       state.product.product_id = action.payload?.product_id || null
     },
   },
@@ -51,7 +50,6 @@ export const alert_modal = (state) => state.alerts.alert_modal
 export const alert_modal_type = (state) => state.alerts.alert_modal_type
 export const alert_modal_title = (state) => state.alerts.alert_modal_title
 export const alert_modal_body = (state) => state.alerts.alert_modal_body
-export const alert_modal_action = (state) => state.alerts.alert_modal_action
 
 export const product_id = (state) => state.alerts.product?.product_id
 export const category_id = (state) => state.alerts.category?._id
