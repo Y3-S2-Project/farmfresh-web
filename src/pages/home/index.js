@@ -7,7 +7,7 @@ import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableB
 import productImage from '../../assets/cart/Ellipse 6.png'
 import FFReviewManageModal from '../../components/molecules/FFModal/FFReviewManageModal'
 import ColouredNotepadIcon from '../../assets/icons/ColouredNotepadIcon'
-
+import FFChangePassword from '../../components/molecules/FFChangePassword/FFChangePassword'
 const Index = () => {
   return (
     <>
@@ -24,11 +24,12 @@ const Index = () => {
           <FFTableBody rows={ROWS} SingleItem={FFSingleCartItem} />
         </FFTable>
       </div> */}
-      <FFReviewManageModal
+      {/* <FFReviewManageModal
         title={'Write a Review'}
         subTitle={'Share your thoughts about this product'}
         topLeftIcon={<ColouredNotepadIcon />}
-      />
+      /> */}
+      <FFChangePassword />
     </>
   )
 }
