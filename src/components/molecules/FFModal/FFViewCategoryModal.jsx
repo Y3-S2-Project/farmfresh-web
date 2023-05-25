@@ -5,7 +5,7 @@ import {
   view_category_modal,
   viewCategoryModalOpen,
 } from '../../redux/features/categorySlice'
-export const ViewCategoryModal = () => {
+export const FFViewCategoryModal = () => {
   const dispatch = useDispatch()
   const view_category_detail_modal = useSelector(view_category_modal)
 

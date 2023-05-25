@@ -11,11 +11,11 @@ import { getAllProducts } from '../../redux/features/productSlice'
 import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
-import AlertModal from '../../components/organisms/AlertModal'
+import FFAlertModal from '../../components/organisms/FFAlertModal'
 import FFProductTableData from '../../components/atoms/FFProductTableData/FFProductTableData'
 import { PRODUCT_TABLE_HEADER_CONTENT } from '../../utils/constants'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
-import { ViewProductModal } from '../../components/organisms/ViewProductModal'
+import { FFViewProductModal } from '../../components/organisms/FFViewProductModal'
 const AdminProductPage = () => {
   const dispatch = useDispatch()
 
@@ -50,8 +50,8 @@ const AdminProductPage = () => {
 
   return (
     <div>
-      <AlertModal />
-      <ViewProductModal />
+      <FFAlertModal />
+      <FFViewProductModal />
       {content}
     </div>
   )

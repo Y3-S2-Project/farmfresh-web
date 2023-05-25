@@ -205,7 +205,7 @@ const DialogBody = ({ type, handleClose, body, handleClick }) => {
     </div>
   )
 }
-export default function AlertModal() {
+export default function FFAlertModal() {
   const dispatch = useDispatch()
   const alert_modal_open = useSelector(alert_modal)
   const title = useSelector(alert_modal_title)

@@ -1,24 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react'
-
+import { DUMMY_CATEGORIES } from '../../utils/constants'
 import { imageUpload, removeImage } from '../../utils/imagesFunctions'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  add_category_modal,
-  postCategory,
+  edit_category_modal,
   getAllCategories,
   isSuccess,
   isError,
-  addCategoryModal,
+  editCategoryModalOpen,
+  updateCategory,
   message,
 } from '../../redux/features/categorySlice'
 
-const AddCategoryModal = () => {
+const FFEditCategoryModal = () => {
   const dispatch = useDispatch()
-  const add_category_detail_modal = useSelector(add_category_modal)
+  const edit_category_detail_modal = useSelector(edit_category_modal)
   const succesStatus = useSelector(isSuccess)
   const errorStatus = useSelector(isError)
   const responseMessage = useSelector(message)
-
   const alert = (msg, type) => (
     <div
       className={`text-${type} flex felx-row  justify-center items-center py-2 px-4 w-full`}
@@ -34,63 +33,69 @@ const AddCategoryModal = () => {
 
   const [imageAdded, setImageAdded] = useState(false)
 
-  const [fData, setFdata] = useState({
-    category_id: '',
+  const [editFormData, setEditformdata] = useState({
+    _id: null,
     category_name: '',
-    category_status: 'Available',
+
+    category_status: '',
     category_description: '',
     category_image: '',
+
     success: false,
     error: false,
   })
   useEffect(() => {
-    console.log(add_category_detail_modal)
-  }, [])
+    setEditformdata({
+      category_name: edit_category_detail_modal.category_name,
+
+      category_status: edit_category_detail_modal.category_status,
+      category_description: edit_category_detail_modal.category_description,
+      category_image: edit_category_detail_modal.category_image,
+    })
+  }, [edit_category_detail_modal])
+
   useEffect(() => {
     setImageAdded(true)
     setSelectedFile(null)
-    console.log(add_category_detail_modal)
-  }, [fData?.category_image])
+  }, [editFormData?.product_image])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    if (fData.category_image) {
-      setFdata({ ...fData, error: 'Please upload at least 1 image' })
-      setTimeout(() => {
-        setFdata({ ...fData, error: false })
-      }, 2000)
+    if (editFormData?.product_image) {
+      console.log('UploaImage ')
+    } else {
+      console.log('Image uploading')
     }
-
     try {
-      const { success, error, ...data } = fData
-      dispatch(postCategory(data))
+      dispatch(
+        updateCategory({
+          category: {
+            category_image: editFormData.category_image,
+            category_name: editFormData.category_name,
+            category_status: editFormData.category_status,
+            category_description: editFormData.category_description,
+          },
+          category_id: edit_category_detail_modal._id,
+        }),
+      )
 
       if (succesStatus) {
         dispatch(getAllCategories())
-        setFdata({
-          category_name: '',
-          category_status: '',
-          category_description: '',
-          category_image: '',
-          success: succesStatus,
-          error: false,
-        })
+        setEditformdata({ ...editFormData, success: succesStatus })
         setTimeout(() => {
-          setFdata({
-            ...fData,
-            category_name: '',
-            category_status: '',
-            category_description: '',
-            category_image: '',
-            success: false,
-            error: false,
+          return setEditformdata({
+            ...editFormData,
+            success: succesStatus,
           })
         }, 2000)
       } else if (errorStatus) {
-        setFdata({ ...fData, success: false, error: errorStatus })
+        setEditformdata({ ...editFormData, error: errorStatus })
         setTimeout(() => {
-          return setFdata({ ...fData, error: false, success: false })
+          return setEditformdata({
+            ...editFormData,
+            error: false,
+            success: false,
+          })
         }, 2000)
       }
     } catch (error) {
@@ -124,7 +129,7 @@ const AddCategoryModal = () => {
     imageUpload(selectedFile, 'categoryImages')
       .then((imageUrl) => {
         // push the imageUrl to the imageUrl array
-        setFdata((prevState) => ({
+        setEditformdata((prevState) => ({
           ...prevState,
           error: false,
           success: false,
@@ -144,7 +149,7 @@ const AddCategoryModal = () => {
     removeImage(imageUrl)
       .then(
         // Remove the imageUrl from the formData
-        setFdata((prevState) => ({
+        setEditformdata((prevState) => ({
           ...prevState,
           error: false,
           success: false,
@@ -164,10 +169,10 @@ const AddCategoryModal = () => {
       <div
         onClick={() => {
           console.log('background clicked')
-          dispatch(addCategoryModal(false))
+          dispatch(editCategoryModalOpen({ open: false }))
         }}
         className={`${
-          add_category_detail_modal ? '' : 'hidden'
+          edit_category_detail_modal.modal ? '' : 'hidden'
         } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
       />
       {/* End Black Overlay */}
@@ -175,18 +180,21 @@ const AddCategoryModal = () => {
       {/* Modal Start */}
       <div
         className={`${
-          add_category_detail_modal ? '' : 'hidden'
+          edit_category_detail_modal.modal ? '' : 'hidden'
         } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
       >
         <div className="mt-4 md:mt-0 relative bg-[#F5F3F0] w-8/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
           <div className="flex items-center justify-between w-full pt-4">
             <span className="text-left font-semibold text-2xl tracking-wider">
-              Add Category
+              Edit Category
             </span>
             {/* Close Modal */}
             <span
               style={{ background: '#626262' }}
-              onClick={(e) => dispatch(addCategoryModal(false))}
+              onClick={() => {
+                console.log('background clicked')
+                dispatch(editCategoryModalOpen({ open: false }))
+              }}
               className="cursor-pointer text-gray-100 py-2 px-2 rounded-full"
             >
               <svg
@@ -229,10 +237,10 @@ const AddCategoryModal = () => {
                 <label htmlFor="name">Category Name </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={fData.category_name}
+                  value={editFormData.category_name}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editFormData,
                       error: false,
                       success: false,
                       category_name: e.target.value,
@@ -247,10 +255,10 @@ const AddCategoryModal = () => {
                 <label htmlFor="status">Category Status </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <select
-                  value={fData.category_status}
+                  value={editFormData.category_status}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editFormData,
                       error: false,
                       success: false,
                       category_status: e.target.value,
@@ -280,10 +288,10 @@ const AddCategoryModal = () => {
                 </span>
                 {imageAdded && (
                   <div className="mt-3">
-                    {fData.category_image && (
+                    {editFormData.category_image && (
                       <div className="relative">
                         <img
-                          src={fData.category_image}
+                          src={editFormData.category_image}
                           alt="Category_Image"
                           className="w-20 h-20 object-cover rounded-full mr-2 mb-2"
                         />
@@ -291,7 +299,7 @@ const AddCategoryModal = () => {
                           type="button"
                           className="absolute top-0 right-0 p-1 text-gray-500 hover:text-gray-700 transition-all duration-150"
                           onClick={(e) =>
-                            handleImageRemove(fData.category_image, e)
+                            handleImageRemove(editFormData.category_image, e)
                           }
                         >
                           &times;
@@ -334,10 +342,10 @@ const AddCategoryModal = () => {
                 <label htmlFor="description">Category Description</label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <textarea
-                  value={fData.category_description}
+                  value={editFormData.category_description}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editFormData,
                       error: false,
                       success: false,
                       category_description: e.target.value,
@@ -360,9 +368,9 @@ const AddCategoryModal = () => {
                 style={{
                   backgroundColor: '#626262',
                 }}
-                className="rounded-xl  w-32 text-gray-100 text-lg font-medium py-2"
+                className="rounded-xl  w-40 text-gray-100 text-lg font-medium py-2"
               >
-                Add Category
+                Update Category
               </button>
             </div>
           </form>
@@ -372,4 +380,4 @@ const AddCategoryModal = () => {
   )
 }
 
-export default AddCategoryModal
+export default FFEditCategoryModal

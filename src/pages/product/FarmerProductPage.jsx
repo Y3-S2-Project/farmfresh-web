@@ -15,14 +15,14 @@ import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableH
 import FFButton from '../../components/atoms/FFButton/FFButton'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
-import AlertModal from '../../components/organisms/AlertModal'
+import FFAlertModal from '../../components/organisms/FFAlertModal'
 import FFProductTableData from '../../components/atoms/FFProductTableData/FFProductTableData'
 import { PRODUCT_TABLE_HEADER_CONTENT } from '../../utils/constants'
 
-import AddProductModal from '../../components/organisms/AddProductModal'
-import EditProductModal from '../../components/organisms/EditProductModal'
+import FFAddProductModal from '../../components/organisms/FFAddProductModal'
+import FFEditProductModal from '../../components/organisms/FFEditProductModal'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
-import { ViewProductModal } from '../../components/organisms/ViewProductModal'
+import { FFViewProductModal } from '../../components/organisms/FFViewProductModal'
 import { getAllCategories } from '../../redux/features/categorySlice'
 const FarmerProductPage = () => {
   const dispatch = useDispatch()
@@ -90,10 +90,10 @@ const FarmerProductPage = () => {
           }}
         />
       </div>
-      <AlertModal />
-      <EditProductModal />
-      <ViewProductModal />
-      <AddProductModal /> {content}
+      <FFAlertModal />
+      <FFEditProductModal />
+      <FFViewProductModal />
+      <FFAddProductModal /> {content}
     </div>
   )
 }

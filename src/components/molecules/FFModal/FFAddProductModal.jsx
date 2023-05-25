@@ -1,36 +1,31 @@
-import React, { Fragment, useState, useEffect, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect, useRef } from 'react'
+import { imageUpload, removeImage } from '../../utils/imagesFunctions'
+import { useDispatch, useSelector } from 'react-redux'
 import {
-  edit_product_modal,
+  add_product_modal,
+  postProduct,
   getAllProducts,
   isSuccess,
   isError,
-  editProductModalOpen,
-  updateProduct,
+  addProductModal,
   message,
 } from '../../redux/features/productSlice'
+
 import { selectAllCategories } from '../../redux/features/categorySlice'
-import { imageUpload, removeImage } from '../../utils/imagesFunctions'
 import {
-  validateProductName,
   validateNumericInput,
+  validateProductName,
 } from '../../utils/validations/product'
-const EditProductModal = () => {
+const FFAddProductDetail = () => {
   const dispatch = useDispatch()
-  const edit_product_detail_modal = useSelector(edit_product_modal)
+  const add_product_detail_modal = useSelector(add_product_modal)
   const succesStatus = useSelector(isSuccess)
   const errorStatus = useSelector(isError)
   const responseMessage = useSelector(message)
-
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [error, setError] = useState('')
-  const fileInputRef = useRef(null)
-
-  const categories = useSelector(selectAllCategories)
-  const [imageAdded, setImageAdded] = useState(false)
   //error
   const [productNameError, setProductNameError] = useState('')
 
+  const categories = useSelector(selectAllCategories)
   const alert = (msg, type) => (
     <div
       className={`text-${type} flex felx-row  justify-center items-center py-2 px-4 w-full`}
@@ -39,10 +34,17 @@ const EditProductModal = () => {
     </div>
   )
 
-  const [editformData, setEditformdata] = useState({
+  //added newly
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [error, setError] = useState('')
+  const fileInputRef = useRef(null)
+
+  const [imageAdded, setImageAdded] = useState(false)
+
+  const [fData, setFdata] = useState({
     product_name: '',
     product_price: 0.0,
-    product_status: '',
+    product_status: 'in stock',
     product_category: '',
     product_offer: 0.0,
     product_images: [],
@@ -55,63 +57,69 @@ const EditProductModal = () => {
   })
 
   useEffect(() => {
-    setEditformdata({
-      product_name: edit_product_detail_modal.product_name,
-      product_price: edit_product_detail_modal.product_price,
-      product_status: edit_product_detail_modal.product_status,
-      product_category: edit_product_detail_modal.product_category,
-      product_offer: edit_product_detail_modal.product_offer,
-      product_images: edit_product_detail_modal.product_images,
-      product_quantity: edit_product_detail_modal.product_quantity,
-      product_visible: edit_product_detail_modal.product_visible,
-      product_weight: edit_product_detail_modal.product_weight,
-      product_sale_status: edit_product_detail_modal.product_sale_status,
-    })
-  }, [edit_product_detail_modal])
-
-  useEffect(() => {
     setImageAdded(true)
-  }, [editformData?.product_images])
+    setSelectedFile(null)
+  }, [fData?.product_images])
 
-  const submitForm = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (editformData?.product_images > 1) {
-      console.log('UploaImage ')
-    } else {
-      console.log('Image uploading')
+
+    if (fData.product_images?.length > 1) {
+      setFdata({ ...fData, error: 'Please upload at least 1 image' })
+      setTimeout(() => {
+        setFdata({ ...fData, error: false })
+      }, 2000)
     }
+
     try {
-      const { error, success, ...updatedData } = editformData
-      console.log(editformData)
-      dispatch(
-        updateProduct({
-          ...updatedData,
-          product_id: edit_product_detail_modal.product_id,
-        }),
-      )
+      const { success, error, ...data } = fData
+      dispatch(postProduct(data))
+
       if (succesStatus) {
         dispatch(getAllProducts())
-        setEditformdata({ ...editformData, success: succesStatus })
+        setFdata({
+          ...fData,
+          product_name: '',
+          product_price: 0.0,
+          product_status: '',
+          product_category: '',
+          product_offer: 0.0,
+          product_images: [],
+          product_quantity: 0,
+          product_visible: true,
+          product_weight: 0.0,
+          product_sale_status: false,
+          success: succesStatus,
+          error: false,
+        })
         setTimeout(() => {
-          return setEditformdata({
-            ...editformData,
-            success: succesStatus,
+          setFdata({
+            ...fData,
+            product_name: '',
+            product_price: 0.0,
+            product_status: '',
+            product_category: '',
+            product_offer: 0.0,
+            product_images: [],
+            product_quantity: 0,
+            product_visible: true,
+            product_weight: 0.0,
+            product_sale_status: false,
+            success: false,
+            error: false,
           })
         }, 2000)
       } else if (errorStatus) {
-        setEditformdata({ ...editformData, error: errorStatus })
+        setFdata({ ...fData, success: false, error: errorStatus })
         setTimeout(() => {
-          return setEditformdata({
-            ...editformData,
-            error: false,
-            success: false,
-          })
+          return setFdata({ ...fData, error: false, success: false })
         }, 2000)
       }
     } catch (error) {
       console.log(error)
     }
   }
+
   const handleFileSelect = (event) => {
     const file = event.target.files[0]
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
@@ -135,10 +143,10 @@ const EditProductModal = () => {
     if (!selectedFile) {
       return
     }
-    imageUpload(selectedFile, 'productImages')
+    imageUpload(selectedFile, 'itemsImages')
       .then((imageUrl) => {
         // push the imageUrl to the imageUrl array
-        setEditformdata((prevState) => ({
+        setFdata((prevState) => ({
           ...prevState,
           error: false,
           success: false,
@@ -158,7 +166,7 @@ const EditProductModal = () => {
     removeImage(imageUrl)
       .then(
         // Remove the imageUrl from the formData
-        setEditformdata((prevState) => ({
+        setFdata((prevState) => ({
           ...prevState,
           error: false,
           success: false,
@@ -177,11 +185,13 @@ const EditProductModal = () => {
 
   return (
     <>
-      {/* Black Overlay */}
       <div
-        onClick={(e) => dispatch(editProductModalOpen({ open: false }))}
+        onClick={() => {
+          console.log('background clicked')
+          dispatch(addProductModal(false))
+        }}
         className={`${
-          edit_product_detail_modal.modal ? '' : 'hidden'
+          add_product_detail_modal ? '' : 'hidden'
         } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
       />
       {/* End Black Overlay */}
@@ -189,18 +199,18 @@ const EditProductModal = () => {
       {/* Modal Start */}
       <div
         className={`${
-          edit_product_detail_modal.modal ? '' : 'hidden'
+          add_product_detail_modal ? '' : 'hidden'
         } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
       >
         <div className="mt-4 md:mt-0 relative bg-[#F5F3F0] w-8/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
           <div className="flex items-center justify-between w-full pt-4">
             <span className="text-left font-semibold text-2xl tracking-wider">
-              Edit Product
+              Add Product
             </span>
             {/* Close Modal */}
             <span
               style={{ background: '#626262' }}
-              onClick={(e) => dispatch(editProductModalOpen({ open: false }))}
+              onClick={(e) => dispatch(addProductModal(false))}
               className="cursor-pointer text-gray-100 py-2 px-2 rounded-full"
             >
               <svg
@@ -219,39 +229,39 @@ const EditProductModal = () => {
               </svg>
             </span>
           </div>
-          {editformData.error
+          {errorStatus
             ? alert(
                 responseMessage !== 'All products' ? responseMessage : '',
                 'red',
               )
             : ''}
-          {editformData.success
+          {succesStatus
             ? alert(
                 responseMessage !== 'All products' ? responseMessage : '',
                 'green',
               )
             : ''}
           {productNameError ? alert(productNameError, 'red') : ''}
-          <form className="w-full" onSubmit={(e) => submitForm(e)}>
+          <form className="w-full">
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1 space-x-1">
                 <label htmlFor="name">Product Name </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.product_name}
+                  value={fData.product_name}
                   onChange={(e) => {
                     validateProductName({
                       productName: e.target.value,
                       setProductNameError,
                     })
-                    setEditformdata({
-                      ...editformData,
+                    setFdata({
+                      ...fData,
                       error: false,
                       success: false,
                       product_name: e.target.value,
                     })
                   }}
-                  className="px-4 py-2 border  h-14 focus:outline-none"
+                  className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   type="text"
                 />
               </div>
@@ -259,24 +269,24 @@ const EditProductModal = () => {
                 <label htmlFor="price">Product Price (Rs.) </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.product_price}
+                  value={fData.product_price}
                   onChange={(e) =>
-                    setEditformdata({
-                      ...editformData,
+                    setFdata({
+                      ...fData,
                       error: false,
                       success: false,
                       product_price: e.target.value,
                     })
                   }
                   onKeyDown={(e) => validateNumericInput(e)}
-                  type="number"
-                  className="px-4 py-2 border  h-14 focus:outline-none"
+                  className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   id="price"
                 />
               </div>
             </div>
 
             {/* Most Important part for uploading multiple image */}
+
             <div className="flex space-x-1 py-4">
               <div className="flex w-1/2  flex-col mt-4">
                 <label htmlFor="image">Image Upload</label>
@@ -285,8 +295,8 @@ const EditProductModal = () => {
                 </span>
                 {imageAdded && (
                   <div className="mt-3 flex flex-row space-x-1">
-                    {editformData?.product_images &&
-                      editformData?.product_images.map((image, index) => (
+                    {fData?.product_images &&
+                      fData?.product_images.map((image, index) => (
                         <div className="relative " key={index}>
                           <img
                             src={image}
@@ -337,40 +347,39 @@ const EditProductModal = () => {
                 <label htmlFor="weight">Product Weight (Kg)</label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.product_weight}
-                  type="number"
+                  value={fData.product_weight}
                   onChange={(e) =>
-                    setEditformdata({
-                      ...editformData,
+                    setFdata({
+                      ...fData,
                       error: false,
                       success: false,
                       product_weight: e.target.value,
                     })
                   }
                   onKeyDown={(e) => validateNumericInput(e)}
-                  className="px-4 py-2   h-14 border focus:outline-none"
+                  type="number"
+                  className="px-4 py-2 border h-14 rounded-lg focus:outline-none "
                   id="weight"
                 />
               </div>
             </div>
-
             {/* Most Important part for uploading multiple image */}
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="status">Product Status </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <select
-                  value={editformData.product_status}
+                  value={fData.product_status}
                   onChange={(e) =>
-                    setEditformdata({
-                      ...editformData,
+                    setFdata({
+                      ...fData,
                       error: false,
                       success: false,
                       product_status: e.target.value,
                     })
                   }
                   name="status"
-                  className="px-4 py-2  h-14 border focus:outline-none"
+                  className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   id="status"
                 >
                   <option name="status" value="in stock">
@@ -385,35 +394,31 @@ const EditProductModal = () => {
                 <label htmlFor="status">Product Category </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <select
+                  value={fData.product_category}
                   onChange={(e) =>
-                    setEditformdata({
-                      ...editformData,
+                    setFdata({
+                      ...fData,
                       error: false,
                       success: false,
                       product_category: e.target.value,
                     })
                   }
                   name="status"
-                  className="px-4 py-2 border  h-14 focus:outline-none"
+                  className="px-4 py-2 border h-14 focus:outline-none"
                   id="status"
                 >
                   <option disabled value="">
                     Select a category
                   </option>
-                  {categories.map((elem) => {
-                    return (
-                      <Fragment key={elem._id}>
-                        <option
-                          name="status"
-                          value={elem._id}
-                          key={elem._id}
-                          selected
-                        >
-                          {elem.category_name}
-                        </option>
-                      </Fragment>
-                    )
-                  })}
+                  {categories.length > 0
+                    ? categories.map(function (elem) {
+                        return (
+                          <option name="status" value={elem._id} key={elem._id}>
+                            {elem.category_name}
+                          </option>
+                        )
+                      })
+                    : ''}
                 </select>
               </div>
             </div>
@@ -422,10 +427,10 @@ const EditProductModal = () => {
                 <label htmlFor="quantity">Product in Stock </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.product_quantity}
+                  value={fData.product_quantity}
                   onChange={(e) =>
-                    setEditformdata({
-                      ...editformData,
+                    setFdata({
+                      ...fData,
                       error: false,
                       success: false,
                       product_quantity: e.target.value,
@@ -433,7 +438,7 @@ const EditProductModal = () => {
                   }
                   onKeyDown={(e) => validateNumericInput(e)}
                   type="number"
-                  className="px-4 py-2 border  h-14 focus:outline-none"
+                  className="px-4 py-2 border h-14 rounded-lg  focus:outline-none"
                   id="quantity"
                 />
               </div>
@@ -441,29 +446,33 @@ const EditProductModal = () => {
                 <label htmlFor="offer">Product Offfer (%) </label>
                 <span className="text-red-600 text-xs">* Required</span>
                 <input
-                  value={editformData.product_offer}
+                  value={fData.product_offer}
+                  onKeyDown={(e) => validateNumericInput(e)}
+                  type="number"
                   onChange={(e) =>
-                    setEditformdata({
-                      ...editformData,
+                    setFdata({
+                      ...fData,
                       error: false,
                       success: false,
                       product_offer: e.target.value,
                     })
                   }
-                  type="number"
-                  onKeyDown={(e) => validateNumericInput(e)}
-                  className="px-4 py-2 border h-14 focus:outline-none"
+                  className="px-4 py-2 border  h-14 rounded-lg focus:outline-none"
                   id="offer"
                 />
               </div>
             </div>
             <div className="flex flex-row space-y-1 w-full pb-4 md:pb-6 mt-4 justify-end">
+              {/* button needs to be replaced */}
               <button
-                style={{ background: '#626262' }}
-                type="submit"
-                className="rounded-xl  w-36 text-gray-100 text-lg font-medium py-2"
+                type="button"
+                onClick={(e) => handleSubmit(e)}
+                style={{
+                  backgroundColor: '#626262',
+                }}
+                className="rounded-xl  w-32 text-gray-100 text-lg font-medium py-2"
               >
-                Update product
+                Add product
               </button>
             </div>
           </form>
@@ -473,4 +482,4 @@ const EditProductModal = () => {
   )
 }
 
-export default EditProductModal
+export default FFAddProductDetail

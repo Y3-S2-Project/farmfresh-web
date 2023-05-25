@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { isLoading, isError } from '../../../redux/features/productSlice'
-import FFRating from '../FFRating/FFRating'
+import {
+  isLoading,
+  isError,
+  getProduct,
+} from '../../../redux/features/productSlice'
+import FFRating from '../../atoms/FFRating/FFRating'
 import { LoadingIcon } from '../../../assets/icons/LoadingIcon'
-import FFImageSlider from '../FFImageSlider/FFImageSlider'
+import FFImageSlider from '../../atoms/FFImageSlider/FFImageSlider'
 import './product.css'
 import BasketIcon from '../../../assets/icons/BasketIcon'
 import { PlusIcon } from '../../../assets/icons/PlusIcon'
+import { useNavigate } from 'react-router-dom'
 
-const FFProductView = ({ match, history, product }) => {
+const FFProductView = ({ match, product }) => {
   const [qty, setQty] = useState(1)
   const loading = useSelector(isLoading)
   const error = useSelector(isError)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     // dispatch(productAction.product(match.params.productId));
@@ -21,9 +27,15 @@ const FFProductView = ({ match, history, product }) => {
 
   const addToCartHandler = () => {
     // dispatch(addToCart(match.params.productId, qty));
-    history.push('/cart')
+    navigate('/cart')
   }
-
+  const viewProduct = (e) => {
+    if (e.target.tagName !== 'BUTTON') {
+      // Navigate to another UI only if the clicked element is not a button
+      dispatch(getProduct(product.product_id))
+      navigate('/view-product')
+    }
+  }
   return (
     <div>
       {/* {createReviewError && <p>error</p>} */}
@@ -32,7 +44,10 @@ const FFProductView = ({ match, history, product }) => {
       ) : error ? (
         <p>Error message</p>
       ) : (
-        <div className="product-view-product rounded-xl border border-grey-200">
+        <div
+          className="product-view-product rounded-xl border border-grey-200"
+          onClick={(e) => viewProduct(e)}
+        >
           <div className="product-view-product-content">
             <div className="product-view-product-img">
               <img src={product.product_images[0]} alt="product image" />
