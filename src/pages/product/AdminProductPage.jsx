@@ -11,11 +11,11 @@ import { getAllProducts } from '../../redux/features/productSlice'
 import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
-import FFAlertModal from '../../components/organisms/FFAlertModal'
+import FFAlertModal from '../../components/molecules/FFModal/FFAlertModal'
 import FFProductTableData from '../../components/atoms/FFProductTableData/FFProductTableData'
 import { PRODUCT_TABLE_HEADER_CONTENT } from '../../utils/constants'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
-import { FFViewProductModal } from '../../components/organisms/FFViewProductModal'
+import { FFViewProductModal } from '../../components/molecules/FFModal/FFViewProductModal'
 const AdminProductPage = () => {
   const dispatch = useDispatch()
 

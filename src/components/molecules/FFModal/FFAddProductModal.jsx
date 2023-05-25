@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { imageUpload, removeImage } from '../../utils/imagesFunctions'
+import { imageUpload, removeImage } from '../../../utils/imagesFunctions'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   add_product_modal,
@@ -9,13 +9,13 @@ import {
   isError,
   addProductModal,
   message,
-} from '../../redux/features/productSlice'
+} from '../../../redux/features/productSlice'
 
-import { selectAllCategories } from '../../redux/features/categorySlice'
+import { selectAllCategories } from '../../../redux/features/categorySlice'
 import {
   validateNumericInput,
   validateProductName,
-} from '../../utils/validations/product'
+} from '../../../utils/validations/product'
 const FFAddProductDetail = () => {
   const dispatch = useDispatch()
   const add_product_detail_modal = useSelector(add_product_modal)

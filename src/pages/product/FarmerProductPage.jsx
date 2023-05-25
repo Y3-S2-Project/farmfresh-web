@@ -15,14 +15,14 @@ import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableH
 import FFButton from '../../components/atoms/FFButton/FFButton'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
-import FFAlertModal from '../../components/organisms/FFAlertModal'
+import FFAlertModal from '../../components/molecules/FFModal/FFAlertModal'
 import FFProductTableData from '../../components/atoms/FFProductTableData/FFProductTableData'
 import { PRODUCT_TABLE_HEADER_CONTENT } from '../../utils/constants'
 
-import FFAddProductModal from '../../components/organisms/FFAddProductModal'
-import FFEditProductModal from '../../components/organisms/FFEditProductModal'
+import FFAddProductModal from '../../components/molecules/FFModal/FFAddProductModal'
+import FFEditProductModal from '../../components/molecules/FFModal/FFEditProductModal'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
-import { FFViewProductModal } from '../../components/organisms/FFViewProductModal'
+import { FFViewProductModal } from '../../components/molecules/FFModal/FFViewProductModal'
 import { getAllCategories } from '../../redux/features/categorySlice'
 const FarmerProductPage = () => {
   const dispatch = useDispatch()

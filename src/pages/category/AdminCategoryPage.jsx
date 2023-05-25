@@ -15,13 +15,13 @@ import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableH
 import FFButton from '../../components/atoms/FFButton/FFButton'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
-import FFAlertModal from '../../components/organisms/FFAlertModal'
+import FFAlertModal from '../../components/molecules/FFModal/FFAlertModal'
 
 import FFCategoryTableData from '../../components/atoms/FFCategoryTableData/FFCategoryTableData'
 import { CATEGORY_TABLE_HEADER_CONTENT } from '../../utils/constants'
 import FFAddCategoryModal from '../../components/molecules/FFModal/FFAddCategoryModal'
-import FFEditCategoryModal from '../../components/organisms/FFEditCategoryModal'
-import { FFViewCategoryModal } from '../../components/organisms/FFViewCategoryModal'
+import FFEditCategoryModal from '../../components/molecules/FFModal/FFEditCategoryModal'
+import { FFViewCategoryModal } from '../../components/molecules/FFModal/FFViewCategoryModal'
 const AdminCategoryPage = () => {
   const dispatch = useDispatch()
   const categoryList = useSelector(selectAllCategories)

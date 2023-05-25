@@ -1,10 +1,10 @@
 import React from 'react'
-import FFImageSlider from '../atoms/FFImageSlider/FFImageSlider'
+import FFImageSlider from '../../atoms/FFImageSlider/FFImageSlider'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   view_category_modal,
   viewCategoryModalOpen,
-} from '../../redux/features/categorySlice'
+} from '../../../redux/features/categorySlice'
 export const FFViewCategoryModal = () => {
   const dispatch = useDispatch()
   const view_category_detail_modal = useSelector(view_category_modal)

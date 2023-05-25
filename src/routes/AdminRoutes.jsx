@@ -2,7 +2,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import AdminProductPage from '../pages/product/AdminProductPage'
 import AdminCategoryPage from '../pages/category/AdminCategoryPage'
-import { ViewCategoryModal } from '../components/organisms/FFViewCategoryModal'
+
 export const AdminRoutes = () => {
   return (
     <>

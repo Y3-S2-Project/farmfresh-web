@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import {
   view_product_modal,
   viewProductModalOpen,
-} from '../../redux/features/productSlice'
-import { getNutritions } from '../../services/product'
-import FFImageSlider from '../atoms/FFImageSlider/FFImageSlider'
+} from '../../../redux/features/productSlice'
+import { getNutritions } from '../../../services/product'
 import { useDispatch, useSelector } from 'react-redux'
-import { FFSingleProduct } from '../molecules/FFSingleProduct/FFSingleProduct'
+import { FFSingleProduct } from '../../molecules/FFSingleProduct/FFSingleProduct'
 export const FFViewProductModal = () => {
   const dispatch = useDispatch()
   const view_product_detail_modal = useSelector(view_product_modal)

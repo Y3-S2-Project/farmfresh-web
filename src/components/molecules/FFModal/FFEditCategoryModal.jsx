@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { DUMMY_CATEGORIES } from '../../utils/constants'
-import { imageUpload, removeImage } from '../../utils/imagesFunctions'
+import { imageUpload, removeImage } from '../../../utils/imagesFunctions'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   edit_category_modal,
@@ -10,7 +9,7 @@ import {
   editCategoryModalOpen,
   updateCategory,
   message,
-} from '../../redux/features/categorySlice'
+} from '../../../redux/features/categorySlice'
 
 const FFEditCategoryModal = () => {
   const dispatch = useDispatch()

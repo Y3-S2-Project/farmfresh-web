@@ -18,13 +18,13 @@ import {
   alert_modal_body,
   category_id,
   product_id,
-} from '../../redux/features/alertSlice'
+} from '../../../redux/features/alertSlice'
 
 import {
   updateProductVisiblity,
   removeProduct,
-} from '../../redux/features/productSlice'
-import { removeCategory } from '../../redux/features/categorySlice'
+} from '../../../redux/features/productSlice'
+import { removeCategory } from '../../../redux/features/categorySlice'
 import WarningIcon from '@mui/icons-material/Warning'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {

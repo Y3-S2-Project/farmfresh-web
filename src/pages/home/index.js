@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { getAllProducts } from '../../redux/features/productSlice'
 import { FFViewProducts } from '../../components/organisms/FFViewProducts/FFViewProducts'
 const Index = () => {
   return (

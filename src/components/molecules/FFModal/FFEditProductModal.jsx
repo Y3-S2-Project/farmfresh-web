@@ -8,13 +8,13 @@ import {
   editProductModalOpen,
   updateProduct,
   message,
-} from '../../redux/features/productSlice'
-import { selectAllCategories } from '../../redux/features/categorySlice'
-import { imageUpload, removeImage } from '../../utils/imagesFunctions'
+} from '../../../redux/features/productSlice'
+import { selectAllCategories } from '../../../redux/features/categorySlice'
+import { imageUpload, removeImage } from '../../../utils/imagesFunctions'
 import {
   validateProductName,
   validateNumericInput,
-} from '../../utils/validations/product'
+} from '../../../utils/validations/product'
 const FFEditProductModal = () => {
   const dispatch = useDispatch()
   const edit_product_detail_modal = useSelector(edit_product_modal)
