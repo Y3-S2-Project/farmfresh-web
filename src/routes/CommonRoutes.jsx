@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import Home from '../pages/home'
 import FFNavBar from '../components/molecules/FFNavBar/FFNavBar'
 import { ViewProductPage } from '../pages/product/ViewProductPage'
+import OrderAdmin from '../pages/orderAdmin/OrderAdmin'
 
 const CommonRoutes = () => {
   return (
@@ -10,7 +11,8 @@ const CommonRoutes = () => {
       {/* <FFNavBar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path='/view-product' element={ <ViewProductPage/>} />
+        <Route path="/view-product" element={<ViewProductPage />} />
+        <Route path="/order" element={<OrderAdmin />} />
       </Routes>
     </>
   )
