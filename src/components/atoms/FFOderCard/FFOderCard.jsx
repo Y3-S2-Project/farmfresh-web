@@ -8,7 +8,7 @@ import InfoIcon from '../../../assets/icons/InfoIcon'
 
 const FFOderCard = ({ svg, name, price, badge, info, quantity }) => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen ">
+    <div className="flex flex-col  ">
       <Card
         sx={{
           width: 200,
