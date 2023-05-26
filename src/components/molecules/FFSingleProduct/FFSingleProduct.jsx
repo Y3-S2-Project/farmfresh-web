@@ -1,9 +1,7 @@
 import React from 'react'
 import FFImageSlider from '../../atoms/FFImageSlider/FFImageSlider'
-export const FFSingleProduct = ({
-  product,
-  nutritrients,
-}) => {
+import { LocationIcon } from '../../../assets/icons/LocationIcon'
+export const FFSingleProduct = ({ product, nutritrients }) => {
   return (
     <div className="w-full">
       <div className="flex  flex-row  ">
@@ -25,7 +23,7 @@ export const FFSingleProduct = ({
               {product.product_name}
             </div>
             <div className="flex  ml-1">
-              {/* {product.product_name} */}
+              <LocationIcon />
             </div>
           </div>
           <div className="w-full flex  flex-row items-center">
