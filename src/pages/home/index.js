@@ -1,6 +1,17 @@
+
 import React, { useEffect, useState } from 'react'
 
 import { FFViewProducts } from '../../components/organisms/FFViewProducts/FFViewProducts'
+import FFButton from '../../components/atoms/FFButton/FFButton'
+import FFTable from '../../components/molecules/FFTable/FFTable'
+import FFSingleCartItem from '../../components/molecules/FFSingleCartItem/FFSingleCartItem'
+import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
+import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
+import productImage from '../../assets/cart/Ellipse 6.png'
+import FFReviewManageModal from '../../components/molecules/FFModal/FFReviewManageModal'
+import ColouredNotepadIcon from '../../assets/icons/ColouredNotepadIcon'
+import FFChangePassword from '../../components/molecules/FFChangePassword/FFChangePassword'
+
 const Index = () => {
   return (
     <>
@@ -22,7 +33,10 @@ const Index = () => {
         subTitle={'Share your thoughts about this product'}
         topLeftIcon={<ColouredNotepadIcon />}
       /> */}
+
       <FFViewProducts />
+      <FFChangePassword />
+
     </>
   )
 }
