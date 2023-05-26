@@ -11,7 +11,13 @@ const StyledRating = styled(Rating)({
     color: '#DEB225',
   },
 })
-const FFRating = ({ value, handleRatingChange, size, ratingStyles }) => {
+const FFRating = ({
+  value,
+  handleRatingChange,
+  size,
+  ratingStyles,
+  textStyles,
+}) => {
   return (
     <>
       <div
@@ -39,6 +45,7 @@ const FFRating = ({ value, handleRatingChange, size, ratingStyles }) => {
             fontSize: '20px',
             fontWeight: '700',
             marginLeft: '25px',
+            ...textStyles,
           }}
         >
           {value}

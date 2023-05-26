@@ -19,3 +19,5 @@ export const CrossIcon = ({ handleClick }) => {
     </div>
   )
 }
+
+export default CrossIcon
