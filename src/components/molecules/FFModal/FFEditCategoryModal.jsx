@@ -367,7 +367,7 @@ const FFEditCategoryModal = () => {
                 style={{
                   backgroundColor: '#626262',
                 }}
-                className="rounded-xl  w-40 text-gray-100 text-lg font-medium py-2"
+                className="rounded-xl  w-44 text-gray-100 text-lg font-medium py-2"
               >
                 Update Category
               </button>

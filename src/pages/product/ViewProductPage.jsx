@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { selectProduct } from '../../redux/features/productSlice'
 import { getNutritions } from '../../services/product'
-import FFImageSlider from '../../components/atoms/FFImageSlider/FFImageSlider'
+
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+
 import { FFSingleProduct } from '../../components/molecules/FFSingleProduct/FFSingleProduct'
+
 export const ViewProductPage = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [nutritrients, setNutrients] = useState()
   const product = useSelector(selectProduct)
   const fetNutrients = async () => {

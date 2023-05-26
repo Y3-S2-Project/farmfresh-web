@@ -461,7 +461,7 @@ const FFEditProductModal = () => {
               <button
                 style={{ background: '#626262' }}
                 type="submit"
-                className="rounded-xl  w-36 text-gray-100 text-lg font-medium py-2"
+                className="rounded-xl  w-44 text-gray-100 text-lg font-medium py-2"
               >
                 Update product
               </button>

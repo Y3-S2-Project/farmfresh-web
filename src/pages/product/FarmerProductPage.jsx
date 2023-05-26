@@ -24,6 +24,9 @@ import FFEditProductModal from '../../components/molecules/FFModal/FFEditProduct
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
 import { FFViewProductModal } from '../../components/molecules/FFModal/FFViewProductModal'
 import { getAllCategories } from '../../redux/features/categorySlice'
+import FFNavBar from '../../components/molecules/FFNavBar/FFNavBar'
+import { AppBar, Container } from '@mui/material'
+import { FFTitle } from '../../components/atoms/FFTitle/FFTitle'
 const FarmerProductPage = () => {
   const dispatch = useDispatch()
 
@@ -49,7 +52,38 @@ const FarmerProductPage = () => {
   } else if (successStatus) {
     content = (
       <FFTable>
-        <FFTableHead columns={PRODUCT_TABLE_HEADER_CONTENT} />
+        <FFTableHead
+          Button={
+            <FFButton
+              name="+ Add product"
+              variant="contained"
+              handleClick={() => {
+                dispatch(addProductModal(true))
+              }}
+              color="primary"
+              buttonStyles={{
+                width: '200px',
+                height: '46px',
+                color: 'black',
+                backgroundColor: 'white',
+                marginBottom: '20px',
+                border: '2px solid black',
+                opacity: '0.5',
+                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                borderRadius: '24px',
+                fontFamily: 'Poppins',
+                fontWeight: 'bold',
+                fontSize: '16px',
+                lineHeight: '1.6',
+                '&:hover': {
+                  backgroundColor: 'black',
+                  color: 'white',
+                },
+              }}
+            />
+          }
+          columns={PRODUCT_TABLE_HEADER_CONTENT}
+        />
         <FFTableBody rows={productList} SingleItem={FFProductTableData} />
       </FFTable>
     )
@@ -61,34 +95,9 @@ const FarmerProductPage = () => {
     <div>
       <div className="">
         {' '}
-        <FFButton
-          name="+ Add product"
-          variant="contained"
-          handleClick={() => {
-            console.log('Clicked')
-            dispatch(addProductModal(true))
-          }}
-          color="primary"
-          buttonStyles={{
-            width: '200px',
-            height: '46px',
-            color: 'black',
-            backgroundColor: 'white',
-            margin: '2%',
-            border: '2px solid black',
-            opacity: '0.5',
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-            borderRadius: '24px',
-            fontFamily: 'Poppins',
-            fontWeight: 'bold',
-            fontSize: '16px',
-            lineHeight: '1.6',
-            '&:hover': {
-              backgroundColor: 'black',
-              color: 'white',
-            },
-          }}
-        />
+        <FFNavBar />
+        <FFTitle title={`Product Management`} />
+        <div className="  ml-80 mr-80 "> </div>
       </div>
       <FFAlertModal />
       <FFEditProductModal />

@@ -16,12 +16,14 @@ import FFButton from '../../components/atoms/FFButton/FFButton'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableBody'
 import FFAlertModal from '../../components/molecules/FFModal/FFAlertModal'
-
+import FFNavBar from '../../components/molecules/FFNavBar/FFNavBar'
 import FFCategoryTableData from '../../components/atoms/FFCategoryTableData/FFCategoryTableData'
 import { CATEGORY_TABLE_HEADER_CONTENT } from '../../utils/constants'
 import FFAddCategoryModal from '../../components/molecules/FFModal/FFAddCategoryModal'
 import FFEditCategoryModal from '../../components/molecules/FFModal/FFEditCategoryModal'
 import { FFViewCategoryModal } from '../../components/molecules/FFModal/FFViewCategoryModal'
+import { Container } from '@mui/material'
+import { FFTitle } from '../../components/atoms/FFTitle/FFTitle'
 const AdminCategoryPage = () => {
   const dispatch = useDispatch()
   const categoryList = useSelector(selectAllCategories)
@@ -45,7 +47,39 @@ const AdminCategoryPage = () => {
   } else if (successStatus) {
     content = (
       <FFTable>
-        <FFTableHead columns={CATEGORY_TABLE_HEADER_CONTENT} />
+        <FFTableHead
+          Button={
+            <FFButton
+              name="+ Add Category"
+              variant="contained"
+              handleClick={() => {
+                console.log('Clicked')
+                dispatch(addCategoryModal(true))
+              }}
+              color="primary"
+              buttonStyles={{
+                width: '200px',
+                height: '46px',
+                color: 'black',
+                backgroundColor: 'white',
+                marginBottom: '20px',
+                border: '2px solid black',
+                opacity: '0.5',
+                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                borderRadius: '24px',
+                fontFamily: 'Poppins',
+                fontWeight: 'bold',
+                fontSize: '16px',
+                lineHeight: '1.6',
+                '&:hover': {
+                  backgroundColor: 'black',
+                  color: 'white',
+                },
+              }}
+            />
+          }
+          columns={CATEGORY_TABLE_HEADER_CONTENT}
+        />
         <FFTableBody rows={categoryList} SingleItem={FFCategoryTableData} />
       </FFTable>
     )
@@ -55,34 +89,9 @@ const AdminCategoryPage = () => {
 
   return (
     <div>
-      <FFButton
-        name="+ Add Category"
-        variant="contained"
-        handleClick={() => {
-          console.log('Clicked')
-          dispatch(addCategoryModal(true))
-        }}
-        color="primary"
-        buttonStyles={{
-          width: '200px',
-          height: '46px',
-          color: 'black',
-          backgroundColor: 'white',
-          margin: '2%',
-          border: '2px solid black',
-          opacity: '0.5',
-          boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-          borderRadius: '24px',
-          fontFamily: 'Poppins',
-          fontWeight: 'bold',
-          fontSize: '16px',
-          lineHeight: '1.6',
-          '&:hover': {
-            backgroundColor: 'black',
-            color: 'white',
-          },
-        }}
-      />
+      <FFNavBar />
+      <FFTitle title={`Category Management`} />
+      <div className="ml-80 bg-slate-400 mr-80 "></div>
       <FFAddCategoryModal />
       <FFAlertModal />
       <FFEditCategoryModal />

@@ -16,6 +16,9 @@ import FFProductTableData from '../../components/atoms/FFProductTableData/FFProd
 import { PRODUCT_TABLE_HEADER_CONTENT } from '../../utils/constants'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
 import { FFViewProductModal } from '../../components/molecules/FFModal/FFViewProductModal'
+import FFNavBar from '../../components/molecules/FFNavBar/FFNavBar'
+import { Container } from '@mui/material'
+import { FFTitle } from '../../components/atoms/FFTitle/FFTitle'
 const AdminProductPage = () => {
   const dispatch = useDispatch()
 
@@ -50,6 +53,8 @@ const AdminProductPage = () => {
 
   return (
     <div>
+      <FFNavBar />
+      <FFTitle title={`Product Management`} />
       <FFAlertModal />
       <FFViewProductModal />
       {content}
