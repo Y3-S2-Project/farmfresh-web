@@ -1,5 +1,10 @@
-import { storage } from '../configurations/firebase'
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
+import { storage } from '../lib/firebase'
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage'
 import { v4 } from 'uuid'
 
 export const imageUpload = async (selectedFile, imageFolder) => {
