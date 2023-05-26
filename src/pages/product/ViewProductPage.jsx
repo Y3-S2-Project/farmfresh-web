@@ -22,7 +22,7 @@ export const ViewProductPage = () => {
     fetNutrients()
   }, [product, dispatch])
   return (
-    <div className="mt-4 md:mt-0 relative bg-blue w-8/12 md:w-3/6 flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
+    <div className="mt-4 md:mt-0 relative w-8/12 md:w-3/6 flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
       <FFSingleProduct product={product} nutritrients={nutritrients} />
     </div>
   )
