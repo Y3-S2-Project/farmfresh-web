@@ -32,8 +32,8 @@ const FFProductView = ({ match, product }) => {
   const viewProduct = (e) => {
     if (e.target.tagName !== 'BUTTON') {
       // Navigate to another UI only if the clicked element is not a button
-      dispatch(getProduct(product.product_id))
-      navigate('/view-product')
+
+      navigate(`/view-product/${product.product_id}`)
     }
   }
   return (

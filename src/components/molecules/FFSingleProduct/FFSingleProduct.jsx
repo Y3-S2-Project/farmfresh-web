@@ -1,7 +1,11 @@
 import React from 'react'
 import FFImageSlider from '../../atoms/FFImageSlider/FFImageSlider'
 import { LocationIcon } from '../../../assets/icons/LocationIcon'
+import { mapModalOpen } from '../../../redux/features/mapSlice'
+import { useDispatch } from 'react-redux'
+import { FFMapModal } from '../FFModal/FFMapModal'
 export const FFSingleProduct = ({ product, nutritrients }) => {
+  const dispatch = useDispatch()
   return (
     <div className="w-full">
       <div className="flex  flex-row  ">
@@ -23,7 +27,9 @@ export const FFSingleProduct = ({ product, nutritrients }) => {
               {product.product_name}
             </div>
             <div className="flex  ml-1">
-              <LocationIcon />
+              <LocationIcon
+                handleClick={() => dispatch(mapModalOpen({ open: true }))}
+              />
             </div>
           </div>
           <div className="w-full flex  flex-row items-center">
@@ -90,6 +96,7 @@ export const FFSingleProduct = ({ product, nutritrients }) => {
           </div>
         </div>
       </div>
+      <FFMapModal />
     </div>
   )
 }

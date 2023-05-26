@@ -1,8 +1,8 @@
 import React from 'react'
 
-export const LocationIcon = () => {
+export const LocationIcon = ({ handleClick }) => {
   return (
-    <div>
+    <div onClick={handleClick}>
       <svg
         width="16"
         height="20"
