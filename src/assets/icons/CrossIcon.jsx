@@ -1,18 +1,21 @@
-const CrossIcon = () => {
+import React from 'react'
+
+export const CrossIcon = ({ handleClick }) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
-      viewBox="0 0 12 12"
-      fill="none"
-    >
-      <path
-        d="M11.8337 1.3415L10.6587 0.166504L6.00033 4.82484L1.34199 0.166504L0.166992 1.3415L4.82533 5.99984L0.166992 10.6582L1.34199 11.8332L6.00033 7.17484L10.6587 11.8332L11.8337 10.6582L7.17533 5.99984L11.8337 1.3415Z"
-        fill="black"
-      />
-    </svg>
+    <div onClick={handleClick}>
+      {' '}
+      <svg
+        width="17"
+        height="16"
+        viewBox="0 0 17 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M16.3333 1.58625L14.6883 0L8.16667 6.28875L1.645 0L0 1.58625L6.52167 7.875L0 14.1637L1.645 15.75L8.16667 9.46125L14.6883 15.75L16.3333 14.1637L9.81167 7.875L16.3333 1.58625Z"
+          fill="#FE2A26"
+        />
+      </svg>
+    </div>
   )
 }
-
-export default CrossIcon
