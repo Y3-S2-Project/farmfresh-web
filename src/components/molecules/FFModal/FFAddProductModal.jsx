@@ -231,13 +231,13 @@ const FFAddProductDetail = () => {
           </div>
           {errorStatus
             ? alert(
-                responseMessage !== 'All products' ? responseMessage : '',
+                responseMessage !== 'All famer products' ? responseMessage : '',
                 'red',
               )
             : ''}
           {succesStatus
             ? alert(
-                responseMessage !== 'All products' ? responseMessage : '',
+                responseMessage !== 'All famer products' ? responseMessage : '',
                 'green',
               )
             : ''}
