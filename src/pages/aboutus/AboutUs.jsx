@@ -1,9 +1,12 @@
 import React from 'react'
-
+import FFCategoryTableData, {
+  FFTitle,
+} from '../../components/atoms/FFTitle/FFTitle'
 const AboutUs = () => {
   return (
     <div className="bg-white py-10 px-6 sm:px-10 lg:px-20">
-      <h1 className="text-4xl font-bold mb-6">About Farmefresh</h1>
+      <FFTitle title={`About Farmefresh`} />
+
       <p className="text-lg mb-6">
         Farmefresh is a sustainable agriculture company dedicated to providing
         fresh and organic produce to our customers. We believe in the importance
