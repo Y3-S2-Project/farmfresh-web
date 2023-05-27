@@ -54,13 +54,15 @@ export const ViewProductPage = () => {
   useEffect(() => {
     fetNutrients()
   }, [product, dispatch])
+  console.log('THIS IS PRODUCT', product)
   return (
     <>
+      {/* <p>{product[0]._id} lalalallala</p> */}
       <div className="mt-4 md:mt-0 relative w-8/12 md:w-3/6 flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
         {content}
       </div>
       <div>
-        <FFReviewCardList />
+        <FFReviewCardList product_id={product[0]?._id} />
       </div>
     </>
   )

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 
 import { FFViewProducts } from '../../components/organisms/FFViewProducts/FFViewProducts'
@@ -11,6 +10,8 @@ import productImage from '../../assets/cart/Ellipse 6.png'
 import FFReviewManageModal from '../../components/molecules/FFModal/FFReviewManageModal'
 import ColouredNotepadIcon from '../../assets/icons/ColouredNotepadIcon'
 import FFChangePassword from '../../components/molecules/FFChangePassword/FFChangePassword'
+import FFProfile from '../../components/molecules/FFProfile/FFProfile'
+import FFDashboard from '../../components/molecules/FFDashboard/FFDashobard'
 
 const Index = () => {
   return (
@@ -34,9 +35,10 @@ const Index = () => {
         topLeftIcon={<ColouredNotepadIcon />}
       /> */}
 
-      <FFViewProducts />
-      <FFChangePassword />
-
+      {/* <FFViewProducts />
+      <FFChangePassword /> */}
+      {/* <FFProfile /> */}
+      <FFDashboard />
     </>
   )
 }

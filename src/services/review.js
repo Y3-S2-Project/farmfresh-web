@@ -34,6 +34,7 @@ export const fetchReviews = async (review) => {
         Object.values(review)[0]
       }`,
     )
+    console.log('response in service', response.data)
     return response.data
   } catch (error) {
     console.error(`Error fetching reviews: ${error}`)
