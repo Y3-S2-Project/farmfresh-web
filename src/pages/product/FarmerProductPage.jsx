@@ -8,7 +8,7 @@ import {
   isError,
 } from '../../redux/features/productSlice'
 import {
-  getAllProducts,
+  getFarmerProducts,
   addProductModal,
 } from '../../redux/features/productSlice'
 import FFTableHead from '../../components/molecules/FFTable/FFTableHead/FFTableHead'
@@ -37,13 +37,12 @@ const FarmerProductPage = () => {
   const successStatus = useSelector(isSuccess)
 
   useEffect(() => {
-    if (responseMessage !== 'All products') {
+    if (responseMessage !== 'All famer products') {
       setTimeout(() => {
-        dispatch(getAllProducts())
+        dispatch(getFarmerProducts())
         dispatch(getAllCategories())
       }, 2000)
     }
-    localStorage.setItem('userRole', 'farmer')
   }, [dispatch, responseMessage])
 
   let content = null

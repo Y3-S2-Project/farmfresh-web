@@ -16,14 +16,20 @@ const FFCategoryTableData = ({ row }) => {
       {' '}
       <td className="px-6 py-4">
         <div className="flex text-gray-900 text-center text-sm">
-          <span className="w-full font-medium text-gray-700">
+          <span
+            data-testid="category-name"
+            className="w-full font-medium text-gray-700"
+          >
             {row.category_name}
           </span>
         </div>
       </td>
       <td className="px-6 py-4">
         <div className="flex text-gray-900 text-center text-sm">
-          <span className="w-full font-medium text-gray-700">
+          <span
+            data-testid="category-id"
+            className="w-full font-medium text-gray-700"
+          >
             {row.category_id.slice(0, 7)}...
           </span>
         </div>
@@ -32,6 +38,7 @@ const FFCategoryTableData = ({ row }) => {
         <div className="flex gap-3 text-gray-900 items-center justify-center">
           <div className="relative h-10 w-10">
             <img
+              data-testid="category-img-url"
               className="h-full w-full object-cover object-center"
               src={row.category_image}
               alt={row.category_name}
@@ -46,14 +53,20 @@ const FFCategoryTableData = ({ row }) => {
       </td>
       <td className="px-6 py-4">
         <div className="flex text-gray-900 text-center text-sm">
-          <span className="w-full font-medium text-gray-700">
+          <span
+            data-testid="category-description"
+            className="w-full font-medium text-gray-700"
+          >
             {row.category_description.slice(0, 5)}...
           </span>
         </div>
       </td>
       <td className="px-6 py-4">
         <div className="flex text-gray-900 text-center text-sm">
-          <span className="w-full font-medium text-gray-700">
+          <span
+            data-testid="category-updated-at"
+            className="w-full font-medium text-gray-700"
+          >
             {row.updatedAt}
           </span>
         </div>
@@ -78,7 +91,6 @@ const FFCategoryTableData = ({ row }) => {
             />
             <EditIcon
               handleClick={() => {
-                console.log('Clicked')
                 dispatch(editCategoryModalOpen({ category: row, open: true }))
               }}
               style={{ cursor: 'pointer' }}
