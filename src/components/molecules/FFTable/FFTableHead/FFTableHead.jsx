@@ -2,7 +2,7 @@ import React from 'react'
 
 const FFTableHead = ({ columns, Button }) => {
   return (
-    <thead className="rounded-md shadow-md p-5">
+    <thead className="rounded-md  p-5">
       <tr className="rounded-md ">
         <td>{Button}</td>
       </tr>

@@ -10,7 +10,9 @@ export const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+  config.headers.Authorization = `Bearer ${localStorage.getItem(
+    'access_token',
+  )}`
   return config
 })
 
@@ -31,7 +33,7 @@ export const fetchProduct = async (product_id) => {
 }
 
 export const fetchFarmerProducts = async () => {
-  return await axiosInstance.delete('/products/farmer-products')
+  return await axiosInstance.get('/products/farmer-products')
 }
 
 export const fetchOnSaleProducts = async () => {
