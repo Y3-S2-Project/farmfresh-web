@@ -6,6 +6,10 @@ import FFOderCard from '../../components/atoms/FFOderCard/FFOderCard'
 import FFStatusBadge from '../../components/atoms/FFStatusBadge/FFStatusBadge'
 import FFSingleOrderTableRow from '../../components/molecules/FFSingleOrderTableRow/FFSingleOrderTableRow'
 import InfoIcon from '../../assets/icons/InfoIcon'
+import FFAdminOrderCard from '../../components/atoms/FFAdminOrderCard/FFAdminOrderCard'
+import PendingOrderIcon from '../../assets/icons/PendingOrderIcon'
+import LorryIcon from '../../assets/icons/LorryIcon'
+import PickupOrderIcon from '../../assets/icons/PickupOrderIcon'
 
 const OrderAdmin = () => {
   const rows = [
@@ -40,6 +44,23 @@ const OrderAdmin = () => {
           quantity={'2'}
         />
       </div> */}
+      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <FFAdminOrderCard
+          svg={<PendingOrderIcon />}
+          name={'Total Pending Orders'}
+          value={'1'}
+        />
+        <FFAdminOrderCard
+          svg={<LorryIcon />}
+          name={'Total Deliveries'}
+          value={'2'}
+        />
+        <FFAdminOrderCard
+          svg={<PickupOrderIcon />}
+          name={'Total Pickups'}
+          value={'2'}
+        />
+      </div>
     </div>
   )
 }
