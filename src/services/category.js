@@ -8,7 +8,9 @@ export const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+  config.headers.Authorization = `Bearer ${localStorage.getItem(
+    'access_token',
+  )}`
   return config
 })
 
@@ -30,6 +32,5 @@ export const fetchCategory = async (category_id) => {
 }
 
 export const deleteCategory = async (category_id) => {
-
   return await axiosInstance.delete(`/categories/${category_id}`)
 }

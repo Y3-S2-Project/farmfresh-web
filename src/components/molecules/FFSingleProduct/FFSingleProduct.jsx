@@ -57,17 +57,10 @@ export const FFSingleProduct = ({ product, nutritrients }) => {
               <div className="font-semibold text-l">Nutrition Facts:</div>
               <div className="flex flex-row space-x-1">
                 <div className="flex flex-row space-x-1">
-                  <small>
-                    {' '}
-                    {nutritrients?.totalNutrientsKCal?.ENERC_KCAL.label}
-                  </small>
-                  <small>sdfdf</small>
-                </div>
-                <div className="flex flex-row space-x-1">
                   {' '}
                   <small>
-                    {' '}
-                    {nutritrients?.totalNutrientsKCal?.ENERC_KCAL.label}
+                    {/* {' '}
+                    {nutritrients?.ingredients[0]?.parsed[0]?.nutrients} */}
                   </small>
                   <small>sdfdf</small>
                 </div>
