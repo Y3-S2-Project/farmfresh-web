@@ -3,7 +3,6 @@ import { FFPill } from '../FFPill/FFPill'
 import { BinIcon, VisionIcon, EditIcon } from '../../../assets/icons'
 import {
   editCategoryModalOpen,
-  removeCategory,
   viewCategoryModalOpen,
 } from '../../../redux/features/categorySlice'
 import { alertModalOpen } from '../../../redux/features/alertSlice'
@@ -30,7 +29,7 @@ const FFCategoryTableData = ({ row }) => {
             data-testid="category-id"
             className="w-full font-medium text-gray-700"
           >
-            {row.category_id.slice(0, 7)}...
+            {row.category_id?.slice(0, 7)}...
           </span>
         </div>
       </td>
@@ -57,7 +56,7 @@ const FFCategoryTableData = ({ row }) => {
             data-testid="category-description"
             className="w-full font-medium text-gray-700"
           >
-            {row.category_description.slice(0, 5)}...
+            {row.category_description?.slice(0, 5)}...
           </span>
         </div>
       </td>

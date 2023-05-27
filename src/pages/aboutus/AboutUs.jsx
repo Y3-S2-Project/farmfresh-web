@@ -1,7 +1,5 @@
 import React from 'react'
-import FFCategoryTableData, {
-  FFTitle,
-} from '../../components/atoms/FFTitle/FFTitle'
+import { FFTitle } from '../../components/atoms/FFTitle/FFTitle'
 const AboutUs = () => {
   return (
     <div className="bg-white py-10 px-6 sm:px-10 lg:px-20">
