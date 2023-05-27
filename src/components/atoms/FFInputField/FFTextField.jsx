@@ -9,10 +9,11 @@ const FFTextField = ({
   startIcon,
   required = false,
   requireText,
+  value,
+  onChange,
 }) => {
   return (
     <>
-
       <div>
         <label className={`${labelClassName}`}>
           {label}
@@ -23,10 +24,16 @@ const FFTextField = ({
             </span>
           )}
         </label>
-        {endIcon}
-        <input type={type} className={` ${inputClassName}`} />
+        <div className="relative w-full">
+          <input
+            type={type}
+            className={`${inputClassName}`}
+            value={value}
+            onChange={onChange}
+          />
+          <div className="absolute">{endIcon}</div>
+        </div>
       </div>
-
     </>
   )
 }

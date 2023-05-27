@@ -6,6 +6,9 @@ module.exports = {
       scale: {
         102: '1.02',
       },
+      aspectRatio: {
+        '1/3': '1 / 3',
+      },
     },
   },
   plugins: [],

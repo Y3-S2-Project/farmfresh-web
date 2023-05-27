@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LAForm = ({ children, onSubmit }) => {
+const FFForm = ({ children, onSubmit }) => {
   return (
     <form onSubmit={onSubmit} autoComplete="off">
       {children}
@@ -8,4 +8,4 @@ const LAForm = ({ children, onSubmit }) => {
   )
 }
 
-export default LAForm
+export default FFForm

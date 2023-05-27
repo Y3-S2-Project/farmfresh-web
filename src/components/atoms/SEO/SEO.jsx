@@ -16,13 +16,8 @@ const SEO = ({ title, meta, otherMeta, imageMeta }) => {
             content={item?.content}
           />
         ))}
-        {imageMeta?.map((item) => (
-          <meta
-            key={item?.id}
-            property={item?.property}
-            content={item?.image?.url}
-          />
-        ))}
+
+        <meta property={imageMeta?.property} content={imageMeta?.image?.url} />
       </Helmet>
     </>
   )
