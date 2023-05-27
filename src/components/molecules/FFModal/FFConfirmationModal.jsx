@@ -1,21 +1,12 @@
 import * as React from 'react'
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
 import CloseIcon from '../../../assets/icons/CloseIcon'
 import FFButton from '../../atoms/FFButton/FFButton'
 import BinIcon from '../../../assets/icons/BinIcon'
 import CrossIcon from '../../../assets/icons/CrossIcon'
+import { deleteReview } from '../../../services/review'
 
-function FFModal({
+function FFConfirmationModal({
   title,
   message,
   width = '559px',
@@ -23,33 +14,39 @@ function FFModal({
   topLeftIcon,
   topRightIcon = <CloseIcon />,
   topIconStyles,
+  modalBoxStyles,
   modalTitleStyles,
   modalMessageStyles,
   cancellable = true,
+  review_id,
+  handleClose,
 }) {
-  const [open, setOpen] = React.useState(false)
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
-
-  const handleClickOpen = () => {
-    setOpen(true)
+  const handleDelete = () => {
+    deleteReview(review_id)
+      .then((res) => {
+        console.log(res)
+        handleClose()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
-
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open Modal
-      </Button>
-      <Dialog
-        fullScreen={fullScreen}
-        open={open}
-        onClose={handleClose}
-        width={width}
-        PaperProps={{ sx: { borderRadius: borderRadius } }}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 559,
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          borderRadius: '24px',
+          padding: 0,
+          margin: 0,
+          ...modalBoxStyles,
+        }}
       >
         <div
           style={{
@@ -65,7 +62,7 @@ function FFModal({
           {topLeftIcon}
           {topRightIcon}
         </div>
-        <DialogTitle
+        <Typography
           sx={{
             textAlign: 'left',
             fontWeight: '700',
@@ -77,15 +74,15 @@ function FFModal({
           }}
         >
           {title}
-        </DialogTitle>
+        </Typography>
         <Divider variant="middle" />
-        <DialogContent
+        <div
           sx={{
             padding: '16px 20px 0px 20px',
             margin: 0,
           }}
         >
-          <DialogContentText
+          <Typography
             sx={{
               textAlign: 'left',
               fontWeight: '400',
@@ -96,9 +93,9 @@ function FFModal({
             }}
           >
             {message}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions
+          </Typography>
+        </div>
+        <div
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -112,7 +109,7 @@ function FFModal({
             name="Delete"
             color="error"
             endIcon={<BinIcon />}
-            handleClick={handleClose}
+            handleClick={handleDelete}
             buttonStyles={{ marginBottom: '12px' }}
           />
           {cancellable && (
@@ -122,10 +119,9 @@ function FFModal({
               handleClick={handleClose}
             />
           )}
-        </DialogActions>
-      </Dialog>
+        </div>
+      </Box>
     </>
   )
 }
-
-export default FFModal
+export default FFConfirmationModal
