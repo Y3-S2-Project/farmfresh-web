@@ -13,6 +13,8 @@ import { getNutritions } from '../../services/product'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { FFSingleProduct } from '../../components/molecules/FFSingleProduct/FFSingleProduct'
+import FFReviewModalController from '../../components/organisms/FFReviewModalController'
+import FFReviewCardList from '../../components/molecules/FFReviewCard/FFReviewCardList'
 import { LoadingIcon } from '../../assets/icons/LoadingIcon'
 import { useParams } from 'react-router'
 export const ViewProductPage = () => {
@@ -52,9 +54,16 @@ export const ViewProductPage = () => {
   useEffect(() => {
     fetNutrients()
   }, [product, dispatch])
+  console.log('THIS IS PRODUCT', product)
   return (
-    <div className="mt-4 md:mt-0 relative w-8/12 md:w-3/6 flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
-      {content}
-    </div>
+    <>
+      {/* <p>{product[0]._id} lalalallala</p> */}
+      <div className="mt-4 md:mt-0 relative w-8/12 md:w-3/6 flex flex-col items-center space-y-4 px-4 py-4 md:px-8 rounded-xl">
+        {content}
+      </div>
+      <div>
+        <FFReviewCardList product_id={product[0]?._id} />
+      </div>
+    </>
   )
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState } from 'react'
 import { Box, Divider, Typography } from '@mui/material'
 import CloseIcon from '../../../assets/icons/CloseIcon'
 import FFRating from '../../atoms/FFRating/FFRating'
@@ -7,6 +8,7 @@ import FFForm from '../../molecules/FFForm/FFForm'
 import FFTextArea from '../../atoms/FFInputField/FFTextArea'
 import FFFileUploadField from '../../atoms/FFFileUploadField/FFFileUploadField'
 import UploadIcon from '../../../assets/icons/UploadIcon'
+import { createReview, updateReview } from '../../../services/review'
 
 function FFReviewManageModal({
   title,
@@ -16,14 +18,71 @@ function FFReviewManageModal({
   topLeftIcon,
   topRightIcon = <CloseIcon />,
   isEdit = false,
+  review,
+  handleClose,
 }) {
-  const [rating, setRating] = React.useState(0)
+  const [rating, setRating] = useState(review?.rating || 0)
+  const [reviewText, setReviewText] = useState(review?.review_text || '')
+  const [reviewImage, setReviewImage] = useState(review?.review_image || '')
+  const review_type = review.product_id ? 'product' : 'farmer'
+
   const handlePostReview = () => {
     console.log('Post Review')
+    const newReview = {
+      review_rating: rating,
+      review_description: reviewText,
+      image: reviewImage,
+      user_id: review.user_id,
+    }
+    if (review_type === 'product') {
+      newReview.product_id = review.product_id
+    } else {
+      newReview.farmer_id = review.farmer_id
+    }
+    createReview(newReview)
+      .then((res) => {
+        console.log('Review Created', res)
+        setRating(0)
+        setReviewText('')
+        setReviewImage('')
+        handleClose()
+      })
+      .catch((err) => {
+        console.log('Review Creation Failed', err)
+        setRating(0)
+        setReviewText('')
+        setReviewImage('')
+        handleClose()
+      })
   }
   const handleEditReview = () => {
     console.log('Edit Review')
+    const updatedReview = {
+      review_rating: rating,
+      review_description: reviewText,
+      image: reviewImage,
+    }
+    updateReview(updatedReview)
+      .then((res) => {
+        console.log('Review Updated', res)
+        setRating(0)
+        setReviewText('')
+        setReviewImage('')
+        handleClose()
+      })
+      .catch((err) => {
+        console.log('Review Updation Failed', err)
+        setRating(0)
+        setReviewText('')
+        setReviewImage('')
+        handleClose()
+      })
   }
+  const handleReviewImageUpload = (e) => {
+    console.log('Review Image Upload', e.target.files[0])
+    setReviewImage(e.target.files[0])
+  }
+
   return (
     <>
       <Box
@@ -117,6 +176,7 @@ function FFReviewManageModal({
               }
               icon={<UploadIcon />}
               descriptiveText={true}
+              handleFileUpload={handleReviewImageUpload}
             />
           </div>
           <div
