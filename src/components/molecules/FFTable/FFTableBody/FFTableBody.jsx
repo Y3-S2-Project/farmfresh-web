@@ -1,5 +1,4 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
 const FFTableBody = ({ rows = [], SingleItem }) => {
   return (
     <tbody className="">

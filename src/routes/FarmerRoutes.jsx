@@ -1,14 +1,15 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-
-const sellerRoutes = () => {
+import FarmerProductPage from '../pages/product/FarmerProductPage'
+const FarmerRoutes = () => {
   return (
     <>
-        <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
-        </Routes>
+      <Routes>
+        {' '}
+        <Route path="/farmer/products" element={<FarmerProductPage />} />{' '}
+      </Routes>
     </>
   )
 }
 
-export default sellerRoutes
+export default FarmerRoutes

@@ -1,4 +1,7 @@
-import React from 'react'
+
+import React, { useEffect, useState } from 'react'
+
+import { FFViewProducts } from '../../components/organisms/FFViewProducts/FFViewProducts'
 import FFButton from '../../components/atoms/FFButton/FFButton'
 import FFTable from '../../components/molecules/FFTable/FFTable'
 import FFSingleCartItem from '../../components/molecules/FFSingleCartItem/FFSingleCartItem'
@@ -7,6 +10,7 @@ import FFTableBody from '../../components/molecules/FFTable/FFTableBody/FFTableB
 import productImage from '../../assets/cart/Ellipse 6.png'
 import FFReviewManageModal from '../../components/molecules/FFModal/FFReviewManageModal'
 import ColouredNotepadIcon from '../../assets/icons/ColouredNotepadIcon'
+import FFChangePassword from '../../components/molecules/FFChangePassword/FFChangePassword'
 
 const Index = () => {
   return (
@@ -24,24 +28,17 @@ const Index = () => {
           <FFTableBody rows={ROWS} SingleItem={FFSingleCartItem} />
         </FFTable>
       </div> */}
-      <FFReviewManageModal
+      {/* <FFReviewManageModal
         title={'Write a Review'}
         subTitle={'Share your thoughts about this product'}
         topLeftIcon={<ColouredNotepadIcon />}
-      />
+      /> */}
+
+      <FFViewProducts />
+      <FFChangePassword />
+
     </>
   )
 }
-
-const ROWS = [
-  {
-    id: 1,
-    name: 'Product 1',
-    image: productImage,
-    price: `Rs. ${(195.0).toFixed(2)}`,
-    quantity: 1,
-    total: `Rs. ${(97.5).toFixed(2)}`,
-  },
-]
 
 export default Index
