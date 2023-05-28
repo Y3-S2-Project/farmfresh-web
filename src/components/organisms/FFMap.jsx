@@ -8,7 +8,7 @@ const ContactBody = () => {
           resolve(window.google.maps)
         } else {
           const script = document.createElement('script')
-          const API = ''
+          const API = '$(process.env.REACT_APP_GOOGLE_MAPS_API_KEY)'
           script.src = `https://maps.googleapis.com/maps/api/js?key=${API}`
           script.onload = () => {
             resolve(window.google.maps)
